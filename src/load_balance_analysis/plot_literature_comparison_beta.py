@@ -211,7 +211,7 @@ def plot_single_row(
             [0],
             marker="o",
             color="red",
-            label=r"WT Re = $5.6 \times 10^5$",
+            label=r"WT Re = $5 \times 10^5$",
             linestyle="-",
         ),
         Patch(facecolor="red", edgecolor="none", alpha=0.15, label=r"WT CI of 99%"),
@@ -221,7 +221,7 @@ def plot_single_row(
             marker="o",
             color="red",
             linestyle="--",
-            label=r"WT Re = $5.6 \times 10^5$ $(-\beta)$",
+            label=r"WT Re = $5 \times 10^5$ $(-\beta)$",
         ),
         Patch(
             facecolor="red",
@@ -316,7 +316,7 @@ def plot_double_row(
                 is_with_x_label=False,
                 is_with_x_ticks=False,
                 y_label=(
-                    r"High $\alpha$" + f"\n \n" + y_axis_labels[var]
+                    r"High $\alpha = 11.6$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -408,7 +408,7 @@ def plot_double_row(
                 markersize_i,
                 x_label=r"$\beta$ [°]",
                 y_label=(
-                    r"Low $\alpha$" + f"\n \n" + y_axis_labels[var]
+                    r"Low $\alpha = 6.5$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -504,6 +504,13 @@ def plot_double_row(
     legend_elements = []
     # Legends for high alpha datasets
     for i in range(len(high_data_frames)):
+        # print(f"high_labels[i]: {high_labels[i]}")
+        # if high_labels[i] == "CFD Re = $10\times10^5$ (Struts)":
+        #     label = high_labels[i] + rf" $\alpha = 12$°"
+        # else:
+        #     print(f"VSM or WT in high_labels[i]: {high_labels[i]}")
+        #     label = high_labels[i] + rf" $\alpha = 6.5$, $11.6$°"
+
         legend_elements.append(
             plt.Line2D(
                 [0],
@@ -533,7 +540,7 @@ def plot_double_row(
         #     [0],
         #     marker="o",
         #     color="red",
-        #     label=r"WT Re = $5.6 \times 10^5$",
+        #     label=r"WT Re = $5 \times 10^5$",
         #     linestyle="-",
         # ),
         Patch(facecolor="red", edgecolor="none", alpha=0.15, label="WT CI of 99%"),
@@ -543,7 +550,7 @@ def plot_double_row(
             marker="o",
             color="red",
             linestyle="--",
-            label=r"WT Re = $5.6 \times 10^5$ $(-\beta)$",
+            label=r"WT Re = $5 \times 10^5$ $(-\beta)$",
         ),
         Patch(
             facecolor="red",
@@ -638,9 +645,9 @@ def plotting_polars_beta(
             data_WT_beta_re_56e4_alpha_11_9,
         ],
         labels=[
-            rf"CFD Re = $10\times10^5$",
-            rf"VSM Re = $5.6\times10^5$",
-            rf"WT Re = $5.6\times10^5$",
+            rf"CFD Re = $10\times10^5$ (Struts)",
+            rf"VSM Re = $5\times10^5$",
+            rf"WT Re = $5\times10^5$",
         ],
         colors=["black", "blue", "red"],
         linestyles=["-", "-", "-"],
@@ -659,9 +666,9 @@ def plotting_polars_beta(
             data_WT_beta_re_56e4_alpha_6_8,
         ],
         labels=[
-            # rf"VSM Re = $5.6\times10^5$",
-            rf"VSM Re = $5.6\times10^5$",
-            rf"WT Re = $5.6\times10^5$",
+            # rf"VSM Re = $5\times10^5$",
+            rf"VSM Re = $5\times10^5$",
+            rf"WT Re = $5\times10^5$",
         ],
         colors=["blue", "red"],
         linestyles=["-", "-"],
@@ -735,9 +742,9 @@ def plotting_polars_beta(
             data_WT_beta_re_56e4_alpha_11_9,
         ],
         high_labels=[
-            rf"CFD Re = $10\times10^5$, $\alpha = 12$°",
-            rf"VSM Re = $5.6\times10^5$, $\alpha = 11.6$°",
-            rf"WT Re = $5.6\times10^5$, $\alpha = 11.6$°",
+            rf"CFD Re = $10\times10^5$ $\alpha = 12$° (Struts)",
+            rf"VSM Re = $5\times10^5$",
+            rf"WT Re = $5\times10^5$",
         ],
         high_colors=["black", "blue", "red"],
         high_linestyles=["-", "-", "-"],
@@ -747,8 +754,8 @@ def plotting_polars_beta(
             data_WT_beta_re_56e4_alpha_6_8,
         ],
         low_labels=[
-            rf"VSM Re = $5.6\times10^5$, $\alpha = 6.2$°",
-            rf"WT Re = $5.6\times10^5$, $\alpha = 6.2$°",
+            rf"VSM Re = $5\times10^5$",
+            rf"WT Re = $5\times10^5$",
         ],
         low_colors=["blue", "red"],
         low_linestyles=["-", "-"],
@@ -907,8 +914,8 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_11_9_moment,
         ],
         labels=[
-            r"VSM $\mathrm{Re} = 5.6\times10^5$",
-            r"WT $\mathrm{Re} = $5.6\times10^5$",
+            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"WT $\mathrm{Re} = $5\times10^5$",
         ],
         colors=["blue", "red"],
         linestyles=["-", "-"],
@@ -930,8 +937,8 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_6_8_moment,
         ],
         labels=[
-            r"VSM $\mathrm{Re} = 5.6\times10^5$",
-            r"WT $\mathrm{Re}e = 5.6\times10^5$",
+            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"WT $\mathrm{Re}e = 5\times10^5$",
         ],
         colors=["blue", "red"],
         linestyles=["-", "-"],
@@ -953,8 +960,8 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_11_9_moment,
         ],
         high_labels=[
-            r"VSM $\mathrm{Re} = 5.6\times10^5$, $\alpha = 11.6$°",
-            r"WT $\mathrm{Re} = 5.6\times10^5$, $\alpha = 11.6$°",
+            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"WT $\mathrm{Re} = 5\times10^5$",
         ],
         high_colors=["blue", "red"],
         high_linestyles=["-", "-"],
@@ -964,8 +971,8 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_6_8_moment,
         ],
         low_labels=[
-            r"VSM $\mathrm{Re} = 5.6\times10^5$, $\alpha = 6.2$°",
-            r"WT $\mathrm{Re} = 5.6\times10^5$, $\alpha = 6.2$°",
+            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"WT $\mathrm{Re} = 5\times10^5$",
         ],
         low_colors=["blue", "red"],
         low_linestyles=["-", "-"],

@@ -176,48 +176,104 @@ def calculate_kcrit(Re, xtr, c, nu):
     return kcrit, Rx
 
 
+# def main(results_path, project_dir):
+
+#     # Kinematic viscosity of air at 27°C and 1.19 kg/m^3
+#     nu = kinematic_viscosity_air(T_deg=27, rho=1.19)
+#     print(f"nu: {nu:.2e} m^2/s")
+#     c_values = [0.395]  # Chord lengths in meters
+#     xtr_values = [0.05]  # Transition locations (%c)
+
+#     Re_values = np.array([1.4, 2.8, 4.2, 5.6, 6.9]) * 1e5
+
+#     # Plot the results
+#     set_plot_style()
+#     fig, ax = plt.subplots(figsize=(6.07, 3.57))
+
+#     crit = "crit"
+#     # Loop through both c and xtr values and plot kcrit
+#     for c in c_values:
+#         for xtr in xtr_values:
+#             # print(f"\nxtr: {xtr}m, c: {c}m, transition location: {xtr * c:.2f}m")
+#             kcrit_values = [calculate_kcrit(Re, xtr, c, nu)[0] for Re in Re_values]
+#             Rx = [calculate_kcrit(Re, xtr, c, nu)[1] for Re in Re_values]
+#             # label = f"c = {c} m, xtr = {xtr*100:.0f}%"
+#             label = f"Minimal trip height"
+
+#             # Plot using plot_on_ax
+#             plot_on_ax(
+#                 ax=ax,
+#                 x=Re_values / 1e5,
+#                 y=np.array(kcrit_values) * 1e3,
+#                 label=label,
+#                 marker="o",
+#                 markersize=5,
+#                 x_label=rf"Re $\times 10^5$ [-]",
+#                 y_label=y_axis_labels["kcrit"],
+#             )
+
+#     trip_height = 0.2  # [mm]
+#     ax.axhline(
+#         y=trip_height,
+#         color="red",
+#         linestyle="--",
+#         label=f"Set value",
+#     )
+#     ax.legend()
+#     plt.tight_layout()
+#     plt.savefig(Path(results_path) / "kcrit_seam_height.pdf")
+
+
+def calculate_kcrit_rougnessRe(U, nu, Rek_crit):
+    return Rek_crit * nu / U
+
+
 def main(results_path, project_dir):
+    # nu = kinematic_viscosity_air(T_deg=20, rho=1.19)
+    nu = 1.56e-5
+    print(f"nu: {nu:.2e} m^2/s")
 
-    # Kinematic viscosity of air at 27°C and 1.19 kg/m^3
-    nu = kinematic_viscosity_air(T_deg=27, rho=1.19)
-    c_values = [0.395]  # Chord lengths in meters
-    xtr_values = [0.05]  # Transition locations (%c)
-
-    Re_values = np.array([1.4, 2.8, 4.2, 5.6, 6.9]) * 1e5
-
-    # Plot the results
     set_plot_style()
-    fig, ax = plt.subplots(figsize=(6.07, 3.57))
+    fig, ax = plt.subplots(figsize=(6.2, 3.7))
 
-    crit = "crit"
-    # Loop through both c and xtr values and plot kcrit
-    for c in c_values:
-        for xtr in xtr_values:
-            # print(f"\nxtr: {xtr}m, c: {c}m, transition location: {xtr * c:.2f}m")
-            kcrit_values = [calculate_kcrit(Re, xtr, c, nu)[0] for Re in Re_values]
-            Rx = [calculate_kcrit(Re, xtr, c, nu)[1] for Re in Re_values]
-            # label = f"c = {c} m, xtr = {xtr*100:.0f}%"
-            label = f"Minimal trip height"
+    U_arr = np.array([5, 10, 15, 20, 25])  # Flow velocities in m/s
+    Rek_crit_arr = np.array([200, 300])  # Roughness Reynolds number
 
-            # Plot using plot_on_ax
-            plot_on_ax(
-                ax=ax,
-                x=Re_values / 1e5,
-                y=np.array(kcrit_values) * 1e3,
-                label=label,
-                marker="o",
-                markersize=5,
-                x_label=rf"Re $\times 10^5$ [-]",
-                y_label=y_axis_labels["kcrit"],
-            )
+    # Define different markers for each line
+    markers = ["o", "x", "d", "s"]
+    linestyles = ["-", "-."]
 
+    print(10 * 0.396 / nu)
+    U_arr = np.linspace(5, 25, 50)  # Flow velocities in m/s
+    Re = U_arr * 0.396 / nu
+    # plot for each U, and lines with different Rek_crit
+    for i, Rek_crit in enumerate(Rek_crit_arr):
+        k_crit_arr = Rek_crit * nu / U_arr  # Calculate critical roughness height
+        k_crit_mm = k_crit_arr * 1000  # Convert to mm
+
+        # Plot the line with specified marker but default color
+        line = ax.plot(
+            Re / 1e5,
+            k_crit_mm,
+            # marker=markers[i],
+            linestyle=linestyles[i],
+            label=r"$\textrm{Re}_{\textrm{k,crit}}$" + f" = {Rek_crit}",
+            color="black",
+        )
+
+    # Set labels and title
+    ax.set_xlabel(r"$\textrm{Re} \times 10^{-5}$")
+    U_arr = np.array([5, 10, 15, 20, 25])  # Flow velocities in m/s
+    re_arr = [1.3, 2.5, 3.8, 5, 6.1]
+    ax.set_xticks(re_arr)
+    ax.set_xlim([1.3, 6.1])
+    ax.set_ylabel(rf"$k$ [mm]")
+
+    # Add reference line for the trip height
     trip_height = 0.2  # [mm]
-    ax.axhline(
-        y=trip_height,
-        color="red",
-        linestyle="--",
-        label=f"Set value",
-    )
-    ax.legend()
+    ax.axhline(y=trip_height, color="red", linestyle="--", label=rf"$k=0.2$")
+
+    ax.legend(ncols=1)
+    ax.grid(True, alpha=0.3)
     plt.tight_layout()
     plt.savefig(Path(results_path) / "kcrit_seam_height.pdf")

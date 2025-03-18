@@ -86,6 +86,17 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_alpha_reynolds_sweep(
                     if vw in plot_speeds:
                         Re = np.around((vw_group["Rey"].mean()) / 1e5, 1)
 
+                        if vw == 5:
+                            Re = 1.3
+                        elif vw == 10:
+                            Re = 2.5
+                        elif vw == 15:
+                            Re = 3.8
+                        elif vw == 20:
+                            Re = 5
+                        elif vw == 25:
+                            Re = 6.1
+
                         vw_group = apply_angle_wind_tunnel_corrections_to_df(vw_group)
                         axs[i].set_xlim(-13, 24)
 
@@ -177,6 +188,16 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_beta_reynolds_sweep(
                     for vw, vw_group in group.groupby("vw"):
                         if vw in plot_speeds:
                             Re = np.around((vw_group["Rey"].mean()) / 1e5, 1)
+                            if vw == 5:
+                                Re = 1.3
+                            elif vw == 10:
+                                Re = 2.5
+                            elif vw == 15:
+                                Re = 3.8
+                            elif vw == 20:
+                                Re = 5
+                            elif vw == 25:
+                                Re = 6.1
 
                             vw_group = apply_angle_wind_tunnel_corrections_to_df(
                                 vw_group

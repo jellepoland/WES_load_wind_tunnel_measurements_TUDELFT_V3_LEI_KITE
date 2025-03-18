@@ -56,16 +56,16 @@ def plotting_polars_alpha(
     data_windtunnel = pd.read_csv(path_to_csv)
     # Data frames, labels, colors, and linestyles
     data_frame_list = [
-        data_CFD_Vire2020_5e5,
         data_CFD_Vire2021_10e5,
+        data_CFD_Vire2020_5e5,
         data_VSM_alpha_re_56e4,
         data_windtunnel,
     ]
     labels = [
+        rf"CFD Re = $10\times10^5$ (Struts)",
         rf"CFD Re = $5\times10^5$",
-        rf"CFD Re = $10\times10^5$",
-        rf"VSM Re = $5.6\times10^5$",
-        rf"WT Re = $5.6\times10^5$",
+        rf"VSM Re = $5\times10^5$",
+        rf"WT Re = $5\times10^5$",
         # rf"Polars Uri",
     ]
     colors = ["black", "black", "blue", "red"]
@@ -534,8 +534,8 @@ def plotting_polars_alpha_moments(
         data_WT_alpha_moment,
     ]
     labels = [
-        r"VSM Re = $5.6\times10^5$ no correction",
-        r"WT Re = $5.6\times10^5$",
+        r"VSM Re = $5\times10^5$ no correction",
+        r"WT Re = $5\times10^5$",
     ]
     colors = ["blue", "red"]
     linestyles = ["-", "-"]

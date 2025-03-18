@@ -73,12 +73,12 @@ def save_polar_data(
     angle_of_attack,
     name_appendix,
     body_aero,
-    VSM,
-    VSM_with_stall_correction,
+    solver,
+    solver_stall=None,
     vw=3.05,
 ):
     polar_data, reynolds_number = generate_polar_data(
-        solver=VSM,
+        solver=solver,
         body_aero=body_aero,
         angle_range=angle_range,
         angle_type=angle_type,
@@ -87,16 +87,16 @@ def save_polar_data(
         yaw_rate=0,
         Umag=vw,
     )
-    polar_data_stall, _ = generate_polar_data(
-        solver=VSM_with_stall_correction,
-        body_aero=body_aero,
-        angle_range=angle_range,
-        angle_type=angle_type,
-        angle_of_attack=angle_of_attack,
-        side_slip=0,
-        yaw_rate=0,
-        Umag=vw,
-    )
+    # polar_data_stall, _ = generate_polar_data(
+    #     solver=VSM_with_stall_correction,
+    #     body_aero=body_aero,
+    #     angle_range=angle_range,
+    #     angle_type=angle_type,
+    #     angle_of_attack=angle_of_attack,
+    #     side_slip=0,
+    #     yaw_rate=0,
+    #     Umag=vw,
+    # )
     # Create dataframe and save to CSV
     if angle_type == "angle_of_attack":
         angle = "aoa"
@@ -120,17 +120,17 @@ def save_polar_data(
             "CS": polar_data[3],
         }
     ).to_csv(path_to_csv, index=False)
-    # stall
-    path_to_csv = Path(polar_dir) / f"{file_name}{name_appendix}_stall.csv"
-    pd.DataFrame(
-        {
-            str(angle): polar_data[0],
-            "CL": polar_data_stall[1],
-            "CD": polar_data_stall[2],
-            "CL/CD": np.array(polar_data_stall[1]) / np.array(polar_data_stall[2]),
-            "CS": polar_data_stall[3],
-        }
-    ).to_csv(path_to_csv, index=False)
+    # # stall
+    # path_to_csv = Path(polar_dir) / f"{file_name}{name_appendix}_stall.csv"
+    # pd.DataFrame(
+    #     {
+    #         str(angle): polar_data[0],
+    #         "CL": polar_data_stall[1],
+    #         "CD": polar_data_stall[2],
+    #         "CL/CD": np.array(polar_data_stall[1]) / np.array(polar_data_stall[2]),
+    #         "CS": polar_data_stall[3],
+    #     }
+    # ).to_csv(path_to_csv, index=False)
     ### save moments ###
     # no_stall
     path_to_csv = Path(polar_dir) / f"{file_name}{name_appendix}_moment.csv"
@@ -146,20 +146,20 @@ def save_polar_data(
             "CMz": polar_data[6],
         }
     ).to_csv(path_to_csv, index=False)
-    # stall
-    path_to_csv = Path(polar_dir) / f"{file_name}{name_appendix}_stall_moment.csv"
-    pd.DataFrame(
-        {
-            str(angle): polar_data[0],
-            "CL": polar_data_stall[1],
-            "CD": polar_data_stall[2],
-            "CL/CD": np.array(polar_data_stall[1]) / np.array(polar_data_stall[2]),
-            "CS": polar_data_stall[3],
-            "CMx": polar_data_stall[4],
-            "CMy": polar_data_stall[5],
-            "CMz": polar_data_stall[6],
-        }
-    ).to_csv(path_to_csv, index=False)
+    # # stall
+    # path_to_csv = Path(polar_dir) / f"{file_name}{name_appendix}_stall_moment.csv"
+    # pd.DataFrame(
+    #     {
+    #         str(angle): polar_data[0],
+    #         "CL": polar_data_stall[1],
+    #         "CD": polar_data_stall[2],
+    #         "CL/CD": np.array(polar_data_stall[1]) / np.array(polar_data_stall[2]),
+    #         "CS": polar_data_stall[3],
+    #         "CMx": polar_data_stall[4],
+    #         "CMy": polar_data_stall[5],
+    #         "CMz": polar_data_stall[6],
+    #     }
+    # ).to_csv(path_to_csv, index=False)
 
 
 def running_vsm_to_generate_csv_data(
@@ -226,18 +226,13 @@ def running_vsm_to_generate_csv_data(
     # breakpoint()
 
     # Solvers
-    VSM = Solver(
-        aerodynamic_model_type="VSM",
-        is_with_artificial_damping=False,
-        mu=mu,
-        reference_point=reference_point,
-    )
-    VSM_with_stall_correction = Solver(
-        aerodynamic_model_type="VSM",
-        is_with_artificial_damping=True,
-        mu=mu,
-        reference_point=reference_point,
-    )
+    solver = Solver()
+    # VSM_with_stall_correction = Solver(
+    #     aerodynamic_model_type="VSM",
+    #     is_with_artificial_damping=True,
+    #     mu=mu,
+    #     reference_point=reference_point,
+    # )
 
     ### alpha sweep
     alphas_to_be_plotted = [
@@ -259,7 +254,7 @@ def running_vsm_to_generate_csv_data(
         22.55,
         24.0,
     ]
-    alphas_to_be_plotted = np.linspace(-12.65, 24.0, 30)
+    alphas_to_be_plotted = np.linspace(-12.47, 23.56, 40)
 
     save_polar_data(
         angle_range=alphas_to_be_plotted,
@@ -267,8 +262,8 @@ def running_vsm_to_generate_csv_data(
         angle_of_attack=0,
         name_appendix=name_appendix,
         body_aero=body_aero,
-        VSM=VSM,
-        VSM_with_stall_correction=VSM_with_stall_correction,
+        solver=solver,
+        solver_stall=None,
         vw=vw,
     )
     betas_to_be_plotted = [
@@ -293,21 +288,21 @@ def running_vsm_to_generate_csv_data(
     save_polar_data(
         angle_range=betas_to_be_plotted,
         angle_type="side_slip",
-        angle_of_attack=6.75,
+        angle_of_attack=6.5,
         name_appendix=name_appendix,
         body_aero=body_aero,
-        VSM=VSM,
-        VSM_with_stall_correction=VSM_with_stall_correction,
+        solver=solver,
+        solver_stall=None,
         vw=vw,
     )
     save_polar_data(
         angle_range=betas_to_be_plotted,
         angle_type="side_slip",
-        angle_of_attack=11.95,
+        angle_of_attack=11.6,
         name_appendix=name_appendix,
         body_aero=body_aero,
-        VSM=VSM,
-        VSM_with_stall_correction=VSM_with_stall_correction,
+        solver=solver,
+        solver_stall=None,
         vw=vw,
     )
     return
@@ -346,14 +341,14 @@ def main():
         geom_scaling=geom_scaling,
         n_panels=n_panels,
     )
-    running_vsm_to_generate_csv_data(
-        project_dir,
-        vw=vw,
-        is_with_corrected_polar=False,
-        reference_point=reference_point,
-        geom_scaling=geom_scaling,
-        n_panels=n_panels,
-    )
+    # running_vsm_to_generate_csv_data(
+    #     project_dir,
+    #     vw=vw,
+    #     is_with_corrected_polar=False,
+    #     reference_point=reference_point,
+    #     geom_scaling=geom_scaling,
+    #     n_panels=n_panels,
+    # )
 
 
 if __name__ == "__main__":
