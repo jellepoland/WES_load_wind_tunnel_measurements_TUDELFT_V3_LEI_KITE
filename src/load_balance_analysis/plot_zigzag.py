@@ -536,6 +536,7 @@ def create_grouped_plot(
                 )
                 # Changed color order to match "Clean" first, "with zigzag" second
                 color_list = ["blue", "red"]
+                color_list = ["black", "red"]
                 marker_list = ["o", "o"]
             elif len(group_data) == 6:
                 x_positions = np.linspace(
@@ -548,6 +549,14 @@ def create_grouped_plot(
                     "blue",
                     "red",
                     "blue",
+                    "red",
+                ]
+                color_list = [
+                    "black",
+                    "red",
+                    "black",
+                    "red",
+                    "black",
                     "red",
                 ]
                 marker_list = ["v", "v", "o", "o", "^", "^"]
@@ -590,7 +599,7 @@ def create_grouped_plot(
             [0],
             [0],
             marker="o",
-            color="blue",
+            color=color_list[0],
             label=r"Clean $\beta = 0^\circ$",
             markersize=8,
             linestyle="None",
@@ -599,7 +608,7 @@ def create_grouped_plot(
             [0],
             [0],
             marker="o",
-            color="red",
+            color=color_list[1],
             label=r"With zigzag $\beta = 0^\circ$ ",
             markersize=8,
             linestyle="None",
@@ -608,7 +617,7 @@ def create_grouped_plot(
             [0],
             [0],
             marker="v",
-            color="blue",
+            color=color_list[0],
             label=r"Clean $\beta = -10^\circ$",
             markersize=8,
             linestyle="None",
@@ -617,7 +626,7 @@ def create_grouped_plot(
             [0],
             [0],
             marker="v",
-            color="red",
+            color=color_list[1],
             label=r"With zigzag $\beta = -10^\circ$",
             markersize=8,
             linestyle="None",
@@ -626,7 +635,7 @@ def create_grouped_plot(
             [0],
             [0],
             marker="^",
-            color="blue",
+            color=color_list[0],
             label=r"Clean $\beta = 10^\circ$",
             markersize=8,
             linestyle="None",
@@ -635,7 +644,7 @@ def create_grouped_plot(
             [0],
             [0],
             marker="^",
-            color="red",
+            color=color_list[1],
             label=r"With zigzag $\beta = 10^\circ$",
             markersize=8,
             linestyle="None",
