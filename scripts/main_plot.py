@@ -27,12 +27,12 @@ def main():
     # )
 
     ## plotting
-    plot_zigzag.main(results_path, project_dir)
+    # plot_zigzag.main(results_path, project_dir)
     # plot_literature_comparison.main(results_path, project_dir)
     # plot_reynolds_variation.main(results_path, project_dir)
     # plot_critical_trip_height.main(results_path, project_dir)
     # plot_frequency_psd.main(results_path, project_dir)
-    # plot_and_print_sensor_drift.main(results_path, project_dir)
+    plot_and_print_sensor_drift.main(results_path, project_dir)
     # plot_2D_polar_breukels.main(results_path, project_dir)
     #
     # printing

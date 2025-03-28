@@ -36,20 +36,20 @@ def saving_pdf_and_pdf_tex(results_dir: str, filename: str):
 
 
 x_axis_labels = {
-    "alpha": r"$\alpha$ [$^\circ$]",
-    "beta": r"$\beta$ [$^\circ$]",
-    "Re": r"Re $\times 10^5$ [-]",
+    "alpha": r"$\alpha$ ($^\circ$)",
+    "beta": r"$\beta$ ($^\circ$)",
+    "Re": r"Re $\times 10^5$ (-)",
 }
 
 y_axis_labels = {
-    "CL": r"$C_{\mathrm{L}}$ [-]",
-    "CD": r"$C_{\mathrm{D}}$ [-]",
-    "CS": r"$C_{\mathrm{S}}$ [-]",
-    "CMx": r"$C_{\mathrm{M,x}}$ [-]",
-    "CMy": r"$C_{\mathrm{M,y}}$ [-]",
-    "CMz": r"$C_{\mathrm{M,z}}$ [-]",
-    "L/D": r"$L/D$ [-]",
-    "kcrit": r"$k_{\mathrm{crit}}$ [mm]",
+    "CL": r"$C_{\mathrm{L}}$ (-)",
+    "CD": r"$C_{\mathrm{D}}$ (-)",
+    "CS": r"$C_{\mathrm{S}}$ (-)",
+    "CMx": r"$C_{\mathrm{M,x}}$ (-)",
+    "CMy": r"$C_{\mathrm{M,y}}$ (-)",
+    "CMz": r"$C_{\mathrm{M,z}}$ (-)",
+    "L/D": r"$L/D$ (-)",
+    "kcrit": r"$k_{\mathrm{crit}}$ (mm)",
 }
 
 project_dir = Path(__file__).resolve().parent.parent.parent

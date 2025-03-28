@@ -361,7 +361,7 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_beta_total_kite_support(
                 )
 
                 # Set x and y labels
-                ax.set_xlabel(r"$\beta$ [°]")  # , fontsize=12)
+                ax.set_xlabel(r"$\beta$ ($^{\circ}$)")  # , fontsize=12)
                 ax.set_ylabel(y_axis_labels[y_labels[i]])  # , fontsize=12)
 
                 # Enable grid

@@ -94,12 +94,12 @@ def print_sensor_drift_values(results_path: Path, project_dir: Path) -> None:
     # Data lists for each component
     data_lists = [CL_list, CD_list, CS_list, CMx_list, CMy_list, CMz_list]
     component_labels = [
-        r"$F_{\mathrm{x}}$",
-        r"$F_{\mathrm{y}}$",
-        r"$F_{\mathrm{z}}$",
-        r"$M_{\mathrm{x}}$",
-        r"$M_{\mathrm{y}}$",
-        r"$M_{\mathrm{z}}$",
+        r"$F_{\mathrm{x}}$ (N)",
+        r"$F_{\mathrm{y}}$ (N)",
+        r"$F_{\mathrm{z}}$ (N)",
+        r"$M_{\mathrm{x}}$ (Nm)",
+        r"$M_{\mathrm{y}}$ (Nm)",
+        r"$M_{\mathrm{z}}$ (Nm)",
     ]
 
     # Create a 2x3 grid of plots
@@ -125,7 +125,7 @@ def print_sensor_drift_values(results_path: Path, project_dir: Path) -> None:
             linestyle="-",
             marker="o",
             markersize=8,
-            x_label="",
+            x_label="Time (h)",
             y_label=label,
             is_with_x_label=is_with_x_label,
             is_with_x_ticks=is_with_x_label,

@@ -578,7 +578,7 @@ def create_grouped_plot(
         # print(f"group_names: {group_names}")
         ax.set_xticks(range(n_groups))
         ax.set_xticklabels(group_names)
-        ax.set_xlabel(r"Re $\times 10^5$ [-]")
+        ax.set_xlabel(r"Re $\times 10^5$ (-)")
         ax.set_ylabel(y_axis_labels[yaxis_names[ax_idx]])
         # Set only horizontal gridlines
         ax.grid(True, axis="y")

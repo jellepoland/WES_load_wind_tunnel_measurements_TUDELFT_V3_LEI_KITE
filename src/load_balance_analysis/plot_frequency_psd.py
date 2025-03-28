@@ -118,14 +118,14 @@ def plot_frequency_peaks_multi_vw(all_data, save_path, x_max):
                 is_x_label = True
             else:
                 is_x_label = False
-            axs[i].set_xlabel("Hz" if is_x_label else "")
+            axs[i].set_xlabel("Hz (-)" if is_x_label else "")
             axs[i].tick_params(labelbottom=is_x_label)
 
             if i in [0, 3]:
                 is_y_label = True
             else:
                 is_y_label = False
-            axs[i].set_ylabel("Normalized PSD" if is_y_label else "")
+            axs[i].set_ylabel("Normalized PSD (-)" if is_y_label else "")
             axs[i].tick_params(labelleft=is_y_label)
             # axs[i].vlines(5, 0, 1.05, color="red", linestyle="--")
             axs[i].grid(True)
@@ -296,12 +296,12 @@ def plot_time_series_aoa_vw(aoa_folder, vw, project_dir, save_path, x_max):
     # Channels to plot
     channels = ["F_X", "F_Y", "F_Z", "M_X", "M_Y", "M_Z"]
     channel_labels = [
-        r"$F_{\mathrm{x}}$",
-        r"$F_{\mathrm{y}}$",
-        r"$F_{\mathrm{z}}$",
-        r"$M_{\mathrm{x}}$",
-        r"$M_{\mathrm{y}}$",
-        r"$M_{\mathrm{z}}$",
+        r"$F_{\mathrm{x}}$ (N)",
+        r"$F_{\mathrm{y}}$ (N)",
+        r"$F_{\mathrm{z}}$ (N)",
+        r"$M_{\mathrm{x}}$ (Nm)",
+        r"$M_{\mathrm{y}}$ (Nm)",
+        r"$M_{\mathrm{z}}$ (Nm)",
     ]
 
     # Time vector
@@ -317,22 +317,22 @@ def plot_time_series_aoa_vw(aoa_folder, vw, project_dir, save_path, x_max):
         # Plot the time series
         axs[i].plot(time, data, label=label, color="black")
         axs[i].set_title(label)
-        axs[i].set_xlabel("Time [s]" if i >= 3 else "")
-        axs[i].set_ylabel("Force/Moment [N/Nm]" if i % 3 == 0 else "")
+        axs[i].set_xlabel("Time (s)" if i >= 3 else "")
+        axs[i].set_ylabel("Force/Moment (N/Nm)" if i % 3 == 0 else "")
         axs[i].set_xlim([0, x_max])  # Limit to 0-1000 Hz
         # axs[i].set_ylim([0, 1.05])  # Limit to 0-1 PSD
         if i >= 3:
             is_x_label = True
         else:
             is_x_label = False
-        axs[i].set_xlabel("Time [s]" if is_x_label else "")
+        axs[i].set_xlabel("Time (s)" if is_x_label else "")
         axs[i].tick_params(labelbottom=is_x_label)
 
         if i == 0:
-            y_label = "Force [N]"
+            y_label = "Force (N)"
             is_y_label = True
         elif i == 3:
-            y_label = "Moment [Nm]"
+            y_label = "Moment (Nm)"
             is_y_label = True
         else:
             is_y_label = False

@@ -262,12 +262,12 @@ def main(results_path, project_dir):
         )
 
     # Set labels and title
-    ax.set_xlabel(r"$\textrm{Re} \times 10^{-5}$")
+    ax.set_xlabel(r"$\textrm{Re} \times 10^{-5}$ (-)")
     U_arr = np.array([5, 10, 15, 20, 25])  # Flow velocities in m/s
     re_arr = [1.3, 2.5, 3.8, 5, 6.1]
     ax.set_xticks(re_arr)
     ax.set_xlim([1.3, 6.1])
-    ax.set_ylabel(rf"$k$ [mm]")
+    ax.set_ylabel(rf"$k$ (mm)")
 
     # Add reference line for the trip height
     trip_height = 0.2  # [mm]

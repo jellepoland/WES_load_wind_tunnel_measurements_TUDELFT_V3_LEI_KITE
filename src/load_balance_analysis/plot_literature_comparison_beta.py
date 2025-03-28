@@ -133,7 +133,7 @@ def plot_single_row(
                     linestyle=linestyle.replace("-", "--"),
                     marker=marker,
                     markersize=markersize_i,
-                    label=label + r" (-$\beta$)",
+                    label=label + r" , -$\beta$",
                 )
 
                 # If also filling CI for negative beta:
@@ -154,7 +154,7 @@ def plot_single_row(
                     color="white",
                     facecolor=color,
                     alpha=0.3,
-                    label=rf"WT CI of {confidence_interval}\% (-$\beta$)",
+                    label=rf"WT CI of {confidence_interval}\% , -$\beta$",
                     hatch="||",
                 )
 
@@ -162,7 +162,7 @@ def plot_single_row(
     # X-limits, labels, titles, etc.
     for j in range(3):
         axs[j].set_xlim(0, 20)
-        axs[j].set_xlabel(r"$\beta$ [°]")
+        axs[j].set_xlabel(r"$\beta$ ($^{\circ}$)")
         # Optional: if you have a dictionary for custom axis titles:
         # axs[j].set_title(axs_titles[j])
 
@@ -359,7 +359,7 @@ def plot_double_row(
                     linestyle=linestyle.replace("-", "--"),
                     marker=marker,
                     markersize=markersize_i,
-                    label=label + r" (-$\beta$)",
+                    label=label + r" , -$\beta$",
                 )
                 lower_bound = main_y - ci_y
                 upper_bound = main_y + ci_y
@@ -376,7 +376,7 @@ def plot_double_row(
                     color="white",
                     facecolor=color,
                     alpha=0.3,
-                    label=rf"WT CI of {confidence_interval}\% (-$\beta$)",
+                    label=rf"WT CI of {confidence_interval}\% , -$\beta$",
                     hatch="||",
                 )
 
@@ -406,7 +406,7 @@ def plot_double_row(
                 linestyle,
                 marker,
                 markersize_i,
-                x_label=r"$\beta$ [°]",
+                x_label=r"$\beta$ (°)",
                 y_label=(
                     r"Low $\alpha = 6.5$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
@@ -448,7 +448,7 @@ def plot_double_row(
                     linestyle=linestyle.replace("-", "--"),
                     marker=marker,
                     markersize=markersize_i,
-                    label=label + r" (-$\beta$)",
+                    label=label + r" , -$\beta$",
                 )
                 lower_bound = main_y - ci_y
                 upper_bound = main_y + ci_y
@@ -465,7 +465,7 @@ def plot_double_row(
                     color="white",
                     facecolor=color,
                     alpha=0.3,
-                    label=rf"WT CI of {confidence_interval}\% (-$\beta$)",
+                    label=rf"WT CI of {confidence_interval}\% , -$\beta$",
                     hatch="||",
                 )
 

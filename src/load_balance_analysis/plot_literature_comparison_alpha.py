@@ -639,7 +639,7 @@ def plotting_polars_alpha_moments(
 
     # X-axis labels
     for ax in axs:
-        ax.set_xlabel(r"$\alpha$ [°]")
+        ax.set_xlabel(r"$\alpha$ ($^{\circ}$)")
 
     # Y-axis labels
     axs[0].set_ylabel(y_axis_labels["CMx"])
