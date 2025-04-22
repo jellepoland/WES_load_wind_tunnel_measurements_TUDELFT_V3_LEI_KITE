@@ -136,6 +136,8 @@ def main(project_dir: str) -> pd.DataFrame:
     # Dictionary to store data for the table
     table_data = {Re: {} for Re in Reynolds_list}
 
+    table_data_2 = {Re: {} for Re in Reynolds_list}
+
     for df, Re in zip(df_list, Reynolds_list):
         # Compute relative standard deviation for each coefficient
         for col in ["C_D", "C_S", "C_L", "C_roll", "C_pitch", "C_yaw"]:
@@ -148,6 +150,11 @@ def main(project_dir: str) -> pd.DataFrame:
             std_mean = df[f"{col}_std"].mean()
             rel_std_mean = std_mean / mean_mean
             table_data[Re][col] = f"{rel_std_mean:.2f}"
+
+            RSD = df[f"{col}_std"] / df[f"{col}_mean"]
+            RSD_mean = np.abs(RSD.mean())
+            RSD_std = RSD.std()
+            table_data_2[Re][col] = f"{RSD_mean:.2f} ({RSD_std:.2f})"
 
     # for Re in Reynolds_list:
     #     print(f"\nRe: {Re}")
@@ -162,6 +169,9 @@ def main(project_dir: str) -> pd.DataFrame:
     )
     print(f"\n--- Relative standard deviation table ---\n")
     print(table_df.to_string(index=False))
+    print(table_df)
+    table_df_2 = generate_table(table_data_2)
+    print(table_df_2)
 
 
 # def main(project_dir: str) -> pd.DataFrame:

@@ -58,7 +58,7 @@ def plot_single_row(
         # Some runs might have a ratio for side-force 'CS'
         # e.g. 3D geometry difference vs. 2D reference area
         if "CFD" in label:
-            ratio_projected_area_to_side_area = -3.7
+            ratio_projected_area_to_side_area = 1.0
         else:
             ratio_projected_area_to_side_area = 1.0
 
@@ -293,7 +293,7 @@ def plot_double_row(
             continue
 
         # For some cases, side-force may require a scaling ratio
-        ratio_projected_area_to_side_area = -3.7 if "CFD" in label else 1.0
+        ratio_projected_area_to_side_area = 1.0 if "CFD" in label else 1.0
         markersize_i = 8 if i == 0 else None
 
         # Plot each variable on its corresponding subplot (columns)
@@ -316,7 +316,7 @@ def plot_double_row(
                 is_with_x_label=False,
                 is_with_x_ticks=False,
                 y_label=(
-                    r"High $\alpha = 11.6$°" + f"\n \n" + y_axis_labels[var]
+                    r"High $\alpha = 11.9$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -387,7 +387,7 @@ def plot_double_row(
         if data_frame is None:
             continue
 
-        ratio_projected_area_to_side_area = -3.7 if "CFD" in label else 1.0
+        ratio_projected_area_to_side_area = 1.0 if "CFD" in label else 1.0
         markersize_i = 8 if i == 0 else None
 
         for j, var in enumerate(variables_to_plot):
@@ -408,7 +408,7 @@ def plot_double_row(
                 markersize_i,
                 x_label=r"$\beta$ (°)",
                 y_label=(
-                    r"Low $\alpha = 6.5$°" + f"\n \n" + y_axis_labels[var]
+                    r"Low $\alpha = 6.8$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -485,9 +485,9 @@ def plot_double_row(
 
     # Apply global xlim/ylim if provided (assumed as a list of three values for columns)
     if "CL" in variables_to_plot:
-        axs[0, 1].set_ylim(0.1, 0.25)
-        axs[0, 2].set_ylim(-0.3, 0.05)
-        axs[1, 2].set_ylim(-0.35, 0.05)
+        axs[0, 1].set_ylim(0.05, 0.25)
+        axs[0, 2].set_ylim(-0.15, 0.05)
+        axs[1, 2].set_ylim(-0.2, 0.05)
     elif "CMx" in variables_to_plot:
         axs[0, 0].set_ylim(-0.3, 0.1)
         # axs[0, 1].set_ylim(-0.3, 0.05)
@@ -581,44 +581,45 @@ def plotting_polars_beta(
 ):
     polar_dir = Path(project_dir) / "processed_data" / "polar_data"
     # Load VSM data
-    data_VSM_beta_re_56e4_alpha_675_breukels = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.6_alpha_675_breukels.csv"
-    )
-    data_VSM_beta_re_56e4_alpha_675_breukels_stall = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.6_alpha_675_breukels_stall.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_675_breukels = pd.read_csv(
+    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels.csv"
+    # )
+    # data_VSM_beta_re_56e4_alpha_675_breukels_stall = pd.read_csv(
+    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels_stall.csv"
+    # )
     data_VSM_beta_re_56e4_alpha_675_corrected = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.6_alpha_675_corrected.csv"
+        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected.csv"
     )
-    data_VSM_beta_re_56e4_alpha_675_corrected_stall = pd.read_csv(
-        Path(polar_dir)
-        / f"VSM_results_beta_sweep_Rey_5.6_alpha_675_corrected_stall.csv"
-    )
-    data_VSM_beta_re_56e4_alpha_1195_breukels = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.6_alpha_1195_breukels.csv"
-    )
-    data_VSM_beta_re_56e4_alpha_1195_breukels_stall = pd.read_csv(
-        Path(polar_dir)
-        / f"VSM_results_beta_sweep_Rey_5.6_alpha_1195_breukels_stall.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_675_corrected_stall = pd.read_csv(
+    #     Path(polar_dir)
+    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected_stall.csv"
+    # )
+    # data_VSM_beta_re_56e4_alpha_1195_breukels = pd.read_csv(
+    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_1190_breukels.csv"
+    # )
+    # data_VSM_beta_re_56e4_alpha_1195_breukels_stall = pd.read_csv(
+    #     Path(polar_dir)
+    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_1195_breukels_stall.csv"
+    # )
     data_VSM_beta_re_56e4_alpha_1195_corrected = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.6_alpha_1195_corrected.csv"
+        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_1190_corrected.csv"
     )
-    data_VSM_beta_re_56e4_alpha_1195_corrected_stall = pd.read_csv(
-        Path(polar_dir)
-        / f"VSM_results_beta_sweep_Rey_5.6_alpha_1195_corrected_stall.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_1195_corrected_stall = pd.read_csv(
+    #     Path(polar_dir)
+    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_1190_corrected_stall.csv"
+    # )
 
     # Load Lebesque data
     path_to_csv_lebesque_re_100e4_alpha_1195 = (
         Path(project_dir)
         / "data"
         / "CFD_polar_data"
-        / "CFD_V3_CL_CD_CS_RANS_Lebesque_2024_Rey_100e4_beta_sweep.csv"
+        / "CFD_RANS_Rey_10e5_Poland2025_beta_sweep_alpha_13_02.csv"
     )
     data_lebesque_re_100e4_alpha_1195 = pd.read_csv(
         path_to_csv_lebesque_re_100e4_alpha_1195
     )
+
     # Load Wind Tunnel data
     data_WT_beta_re_56e4_alpha_6_8 = pd.read_csv(
         Path(project_dir)
@@ -641,7 +642,7 @@ def plotting_polars_beta(
         results_dir,
         data_frames=[
             data_lebesque_re_100e4_alpha_1195,
-            data_VSM_beta_re_56e4_alpha_1195_corrected_stall,
+            data_VSM_beta_re_56e4_alpha_1195_corrected,
             data_WT_beta_re_56e4_alpha_11_9,
         ],
         labels=[
@@ -662,7 +663,7 @@ def plotting_polars_beta(
     plot_single_row(
         results_dir,
         data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_corrected_stall,
+            data_VSM_beta_re_56e4_alpha_675_corrected,
             data_WT_beta_re_56e4_alpha_6_8,
         ],
         labels=[
@@ -681,68 +682,68 @@ def plotting_polars_beta(
     )
 
     ### 3. literature_polars_beta_high_alpha_correction_vs_no_correction
-    plot_single_row(
-        results_dir,
-        data_frames=[
-            data_VSM_beta_re_56e4_alpha_1195_breukels,
-            data_VSM_beta_re_56e4_alpha_1195_breukels_stall,
-            data_VSM_beta_re_56e4_alpha_1195_corrected,
-            data_VSM_beta_re_56e4_alpha_1195_corrected_stall,
-            data_WT_beta_re_56e4_alpha_11_9,
-        ],
-        labels=[
-            r"VSM Breukels",
-            r"VSM Breukels Stall",
-            r"VSM Corrected",
-            r"VSM Corrected Stall",
-            r"WT",
-        ],
-        colors=["blue", "blue", "green", "green", "red"],
-        linestyles=["--", "-", "--", "-", "-"],
-        markers=["", "", "+", "+", "o"],
-        confidence_interval=confidence_interval,
-        file_name=f"literature_polars_beta_alpha_1195_correction_and_stall_effects",
-        axs_titles=["CL (High Alpha)", "CD (High Alpha)", "CS (High Alpha)"],
-        legend_location_index=0,
-        legend_location="lower left",
-    )
-    ### 4. literature_polars_beta_low_alpha_correction_vs_no_correction
-    plot_single_row(
-        results_dir,
-        data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_breukels,
-            data_VSM_beta_re_56e4_alpha_675_breukels_stall,
-            data_VSM_beta_re_56e4_alpha_675_corrected,
-            data_VSM_beta_re_56e4_alpha_675_corrected_stall,
-            data_WT_beta_re_56e4_alpha_6_8,
-        ],
-        labels=[
-            r"VSM Breukels",
-            r"VSM Breukels Stall",
-            r"VSM Corrected",
-            r"VSM Corrected Stall",
-            r"WT",
-        ],
-        colors=["blue", "blue", "green", "green", "red"],
-        linestyles=["--", "-", "--", "-", "-"],
-        markers=["", "", "+", "+", "o"],
-        confidence_interval=confidence_interval,
-        file_name=f"literature_polars_beta_alpha_675_correction_and_stall_effects",
-        axs_titles=["CL (Low Alpha)", "CD (Low Alpha)", "CS (Low Alpha)"],
-        legend_location_index=0,
-        legend_location="lower left",
-    )
+    # plot_single_row(
+    #     results_dir,
+    #     data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_1195_breukels,
+    #         data_VSM_beta_re_56e4_alpha_1195_breukels_stall,
+    #         data_VSM_beta_re_56e4_alpha_1195_corrected,
+    #         data_VSM_beta_re_56e4_alpha_1195_corrected_stall,
+    #         data_WT_beta_re_56e4_alpha_11_9,
+    #     ],
+    #     labels=[
+    #         r"VSM Breukels",
+    #         r"VSM Breukels Stall",
+    #         r"VSM Corrected",
+    #         r"VSM Corrected Stall",
+    #         r"WT",
+    #     ],
+    #     colors=["blue", "blue", "green", "green", "red"],
+    #     linestyles=["--", "-", "--", "-", "-"],
+    #     markers=["", "", "+", "+", "o"],
+    #     confidence_interval=confidence_interval,
+    #     file_name=f"literature_polars_beta_alpha_1195_correction_and_stall_effects",
+    #     axs_titles=["CL (High Alpha)", "CD (High Alpha)", "CS (High Alpha)"],
+    #     legend_location_index=0,
+    #     legend_location="lower left",
+    # )
+    # ### 4. literature_polars_beta_low_alpha_correction_vs_no_correction
+    # plot_single_row(
+    #     results_dir,
+    #     data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_675_breukels,
+    #         data_VSM_beta_re_56e4_alpha_675_breukels_stall,
+    #         data_VSM_beta_re_56e4_alpha_675_corrected,
+    #         data_VSM_beta_re_56e4_alpha_675_corrected_stall,
+    #         data_WT_beta_re_56e4_alpha_6_8,
+    #     ],
+    #     labels=[
+    #         r"VSM Breukels",
+    #         r"VSM Breukels Stall",
+    #         r"VSM Corrected",
+    #         r"VSM Corrected Stall",
+    #         r"WT",
+    #     ],
+    #     colors=["blue", "blue", "green", "green", "red"],
+    #     linestyles=["--", "-", "--", "-", "-"],
+    #     markers=["", "", "+", "+", "o"],
+    #     confidence_interval=confidence_interval,
+    #     file_name=f"literature_polars_beta_alpha_675_correction_and_stall_effects",
+    #     axs_titles=["CL (Low Alpha)", "CD (Low Alpha)", "CS (Low Alpha)"],
+    #     legend_location_index=0,
+    #     legend_location="lower left",
+    # )
 
     ### 5. plotting double rows
     plot_double_row(
         results_dir,
         high_data_frames=[
             data_lebesque_re_100e4_alpha_1195,
-            data_VSM_beta_re_56e4_alpha_1195_corrected_stall,
+            data_VSM_beta_re_56e4_alpha_1195_corrected,
             data_WT_beta_re_56e4_alpha_11_9,
         ],
         high_labels=[
-            rf"CFD Re = $10\times10^5$ $\alpha = 12$° (Struts)",
+            rf"CFD Re = $10\times10^5$ $\alpha = 13$° (Struts)",
             rf"VSM Re = $5\times10^5$",
             rf"WT Re = $5\times10^5$",
         ],
@@ -750,7 +751,7 @@ def plotting_polars_beta(
         high_linestyles=["-", "-", "-"],
         high_markers=["*", "", "o"],
         low_data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_corrected_stall,
+            data_VSM_beta_re_56e4_alpha_675_corrected,
             data_WT_beta_re_56e4_alpha_6_8,
         ],
         low_labels=[
@@ -787,43 +788,43 @@ def plotting_polars_beta_moments(
     no-correction vs correction for VSM, plus wind tunnel data.
 
     The file names are assumed to have '_moment' appended for the VSM data,
-    e.g. 'VSM_results_beta_sweep_Rey_5.6_alpha_675_no_correction_moment.csv'.
+    e.g. 'VSM_results_beta_sweep_Rey_5.0_alpha_675_no_correction_moment.csv'.
     """
     polar_dir = Path(project_dir) / "processed_data" / "polar_data"
     # 1) Load VSM (High alpha = 11.95 deg) moment data
-    data_VSM_beta_re_56e4_alpha_1195_breukels_moment = pd.read_csv(
-        Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_1195_breukels_moment.csv"
-    )
-    data_VSM_beta_re_56e4_alpha_1195_breukels_stall_moment = pd.read_csv(
-        Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_1195_breukels_stall_moment.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_1195_breukels_moment = pd.read_csv(
+    #     Path(polar_dir)
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_1195_breukels_moment.csv"
+    # )
+    # data_VSM_beta_re_56e4_alpha_1195_breukels_stall_moment = pd.read_csv(
+    #     Path(polar_dir)
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_1195_breukels_stall_moment.csv"
+    # )
     data_VSM_beta_re_56e4_alpha_1195_corrected_moment = pd.read_csv(
         Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_1195_corrected_moment.csv"
+        / "VSM_results_beta_sweep_Rey_5.0_alpha_1190_corrected_moment.csv"
     )
-    data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment = pd.read_csv(
-        Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_1195_corrected_stall_moment.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment = pd.read_csv(
+    #     Path(polar_dir)
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_1195_corrected_stall_moment.csv"
+    # )
 
     # 2) Load VSM (Low alpha = 6.75 deg) moment data
-    data_VSM_beta_re_56e4_alpha_675_breukels_moment = pd.read_csv(
-        Path(polar_dir) / "VSM_results_beta_sweep_Rey_5.6_alpha_675_breukels_moment.csv"
-    )
-    data_VSM_beta_re_56e4_alpha_675_breukels_stall_moment = pd.read_csv(
-        Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_675_breukels_stall_moment.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_675_breukels_moment = pd.read_csv(
+    #     Path(polar_dir) / "VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels_moment.csv"
+    # )
+    # data_VSM_beta_re_56e4_alpha_675_breukels_stall_moment = pd.read_csv(
+    #     Path(polar_dir)
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels_stall_moment.csv"
+    # )
     data_VSM_beta_re_56e4_alpha_675_corrected_moment = pd.read_csv(
         Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_675_corrected_moment.csv"
+        / "VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected_moment.csv"
     )
-    data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment = pd.read_csv(
-        Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.6_alpha_675_corrected_stall_moment.csv"
-    )
+    # data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment = pd.read_csv(
+    #     Path(polar_dir)
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected_stall_moment.csv"
+    # )
 
     # 3) Load Wind Tunnel moment data
     #    (Assuming you saved them as "V3_CMx_CMy_CMz_beta_sweep_alpha_6_8_..." etc.)
@@ -849,68 +850,68 @@ def plotting_polars_beta_moments(
     # )
 
     # 1. moment_literature_polars_beta_high_alpha_correction_vs_no_correction
-    plot_single_row(
-        results_dir=results_dir,
-        data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_breukels_moment,
-            data_VSM_beta_re_56e4_alpha_675_breukels_stall_moment,
-            data_VSM_beta_re_56e4_alpha_675_corrected_moment,
-            data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment,
-            data_WT_beta_re_56e4_alpha_6_8_moment,
-        ],
-        labels=[
-            r"VSM Breukels",
-            r"VSM Breukels Stall",
-            r"VSM Corrected",
-            r"VSM Corrected Stall",
-            r"WT",
-        ],
-        colors=["blue", "blue", "green", "green", "red"],
-        linestyles=["--", "-", "--", "-", "-"],
-        markers=["s", "s", "+", "+", "o"],
-        file_name="moment_literature_polars_beta_alpha_6_8_correction_and_stall_effect",
-        confidence_interval=confidence_interval,
-        axs_titles=["CMx (High Alpha)", "CMy (High Alpha)", "CMz (High Alpha)"],
-        legend_location_index=0,
-        legend_location="lower left",
-        variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
-        # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
-    )
+    # plot_single_row(
+    #     results_dir=results_dir,
+    #     data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_675_breukels_moment,
+    #         data_VSM_beta_re_56e4_alpha_675_breukels_stall_moment,
+    #         data_VSM_beta_re_56e4_alpha_675_corrected_moment,
+    #         data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment,
+    #         data_WT_beta_re_56e4_alpha_6_8_moment,
+    #     ],
+    #     labels=[
+    #         r"VSM Breukels",
+    #         r"VSM Breukels Stall",
+    #         r"VSM Corrected",
+    #         r"VSM Corrected Stall",
+    #         r"WT",
+    #     ],
+    #     colors=["blue", "blue", "green", "green", "red"],
+    #     linestyles=["--", "-", "--", "-", "-"],
+    #     markers=["s", "s", "+", "+", "o"],
+    #     file_name="moment_literature_polars_beta_alpha_6_8_correction_and_stall_effect",
+    #     confidence_interval=confidence_interval,
+    #     axs_titles=["CMx (High Alpha)", "CMy (High Alpha)", "CMz (High Alpha)"],
+    #     legend_location_index=0,
+    #     legend_location="lower left",
+    #     variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
+    #     # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
+    # )
 
-    # 2. moment_literature_polars_beta_low_alpha_correction_vs_no_correction
-    plot_single_row(
-        results_dir=results_dir,
-        data_frames=[
-            data_VSM_beta_re_56e4_alpha_1195_breukels_moment,
-            data_VSM_beta_re_56e4_alpha_1195_breukels_stall_moment,
-            data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
-            data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment,
-            data_WT_beta_re_56e4_alpha_11_9_moment,
-        ],
-        labels=[
-            r"VSM Breukels",
-            r"VSM Breukels Stall",
-            r"VSM Corrected",
-            r"VSM Corrected Stall",
-            r"WT",
-        ],
-        colors=["blue", "blue", "green", "green", "red"],
-        linestyles=["--", "-", "--", "-", "-"],
-        markers=["", "", "+", "+", "o"],
-        file_name="moment_literature_polars_beta_alpha_11_95_correction_and_stall_effect",
-        confidence_interval=confidence_interval,
-        axs_titles=["CMx (Low Alpha)", "CMy (Low Alpha)", "CMz (Low Alpha)"],
-        legend_location_index=0,
-        legend_location="lower left",
-        variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
-        # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
-    )
+    # # 2. moment_literature_polars_beta_low_alpha_correction_vs_no_correction
+    # plot_single_row(
+    #     results_dir=results_dir,
+    #     data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_1195_breukels_moment,
+    #         data_VSM_beta_re_56e4_alpha_1195_breukels_stall_moment,
+    #         data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
+    #         data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment,
+    #         data_WT_beta_re_56e4_alpha_11_9_moment,
+    #     ],
+    #     labels=[
+    #         r"VSM Breukels",
+    #         r"VSM Breukels Stall",
+    #         r"VSM Corrected",
+    #         r"VSM Corrected Stall",
+    #         r"WT",
+    #     ],
+    #     colors=["blue", "blue", "green", "green", "red"],
+    #     linestyles=["--", "-", "--", "-", "-"],
+    #     markers=["", "", "+", "+", "o"],
+    #     file_name="moment_literature_polars_beta_alpha_11_95_correction_and_stall_effect",
+    #     confidence_interval=confidence_interval,
+    #     axs_titles=["CMx (Low Alpha)", "CMy (Low Alpha)", "CMz (Low Alpha)"],
+    #     legend_location_index=0,
+    #     legend_location="lower left",
+    #     variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
+    #     # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
+    # )
 
     # 3. moment_literature_polars_beta_high_alpha
     plot_single_row(
         results_dir=results_dir,
         data_frames=[
-            data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment,
+            data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
             data_WT_beta_re_56e4_alpha_11_9_moment,
         ],
         labels=[
@@ -933,7 +934,7 @@ def plotting_polars_beta_moments(
     plot_single_row(
         results_dir=results_dir,
         data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment,
+            data_VSM_beta_re_56e4_alpha_675_corrected_moment,
             data_WT_beta_re_56e4_alpha_6_8_moment,
         ],
         labels=[
@@ -956,7 +957,7 @@ def plotting_polars_beta_moments(
     plot_double_row(
         results_dir,
         high_data_frames=[
-            data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment,
+            data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
             data_WT_beta_re_56e4_alpha_11_9_moment,
         ],
         high_labels=[
@@ -967,7 +968,7 @@ def plotting_polars_beta_moments(
         high_linestyles=["-", "-"],
         high_markers=["", "o"],
         low_data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment,
+            data_VSM_beta_re_56e4_alpha_675_corrected_moment,
             data_WT_beta_re_56e4_alpha_6_8_moment,
         ],
         low_labels=[

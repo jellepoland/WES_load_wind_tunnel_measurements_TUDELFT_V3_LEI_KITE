@@ -8,7 +8,7 @@ from load_balance_analysis.functions_utils import project_dir
 from VSM.WingGeometry import Wing
 from VSM.BodyAerodynamics import BodyAerodynamics
 from VSM.Solver import Solver
-from VSM.plotting import generate_polar_data
+from VSM.plotting import generate_3D_polar_data
 from VSM.interactive import interactive_plot
 
 
@@ -20,6 +20,7 @@ def create_body_aero(
     path_polar_data_dir="",
     geom_scaling=1.0,
 ):
+
     df = pd.read_csv(file_path, delimiter=",")  # , skiprows=1)
     LE_x_array = df["LE_x"].values / geom_scaling
     LE_y_array = df["LE_y"].values / geom_scaling
@@ -75,9 +76,9 @@ def save_polar_data(
     body_aero,
     solver,
     solver_stall=None,
-    vw=3.05,
+    vw=1.05,
 ):
-    polar_data, reynolds_number = generate_polar_data(
+    polar_data, reynolds_number = generate_3D_polar_data(
         solver=solver,
         body_aero=body_aero,
         angle_range=angle_range,
@@ -171,7 +172,7 @@ def running_vsm_to_generate_csv_data(
     mu=1.76e-5,
     reference_point=None,
     n_panels=150,
-    spanwise_panel_distribution="linear",
+    spanwise_panel_distribution="uniform",
 ) -> None:
     if is_with_corrected_polar:
         print("Running VSM with corrected polar")
@@ -181,14 +182,22 @@ def running_vsm_to_generate_csv_data(
         name_appendix = "_breukels"
 
     vsm_input_path = Path(project_dir) / "data" / "vsm_input"
-    csv_file_path = Path(vsm_input_path) / "geometry_corrected.csv"
-    body_aero = create_body_aero(
-        csv_file_path,
+    # csv_file_path = Path(vsm_input_path) / "geometry_corrected.csv"
+    # body_aero = create_body_aero(
+    #     csv_file_path,
+    #     n_panels,
+    #     spanwise_panel_distribution,
+    #     is_with_corrected_polar,
+    #     vsm_input_path,
+    #     geom_scaling,
+    # )
+    body_aero = BodyAerodynamics.from_file(
+        Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid.csv",
         n_panels,
         spanwise_panel_distribution,
-        is_with_corrected_polar,
-        vsm_input_path,
-        geom_scaling,
+        is_with_corrected_polar=True,
+        polar_data_dir=vsm_input_path,
+        is_half_wing=True,
     )
 
     # ### Plotting reference point at mid-span plane
@@ -226,7 +235,7 @@ def running_vsm_to_generate_csv_data(
     # breakpoint()
 
     # Solvers
-    solver = Solver()
+    solver = Solver(reference_point=reference_point)
     # VSM_with_stall_correction = Solver(
     #     aerodynamic_model_type="VSM",
     #     is_with_artificial_damping=True,
@@ -255,6 +264,7 @@ def running_vsm_to_generate_csv_data(
         24.0,
     ]
     alphas_to_be_plotted = np.linspace(-12.47, 23.56, 40)
+    alphas_to_be_plotted = np.linspace(-5, 24, 30)
 
     save_polar_data(
         angle_range=alphas_to_be_plotted,
@@ -284,11 +294,11 @@ def running_vsm_to_generate_csv_data(
         14,
         20,
     ]
-    betas_to_be_plotted = np.linspace(0, 20, 20)
+    betas_to_be_plotted = np.linspace(0, 10, 10)
     save_polar_data(
         angle_range=betas_to_be_plotted,
         angle_type="side_slip",
-        angle_of_attack=6.5,
+        angle_of_attack=6.8,
         name_appendix=name_appendix,
         body_aero=body_aero,
         solver=solver,
@@ -298,7 +308,7 @@ def running_vsm_to_generate_csv_data(
     save_polar_data(
         angle_range=betas_to_be_plotted,
         angle_type="side_slip",
-        angle_of_attack=11.6,
+        angle_of_attack=11.9,
         name_appendix=name_appendix,
         body_aero=body_aero,
         solver=solver,
@@ -311,9 +321,9 @@ def running_vsm_to_generate_csv_data(
 def main():
 
     ## scaled down geometry
-    vw = 20
+    vw = 2.82
     geom_scaling = 6.5
-    n_panels = 200
+    n_panels = 40
 
     # ## scaled down velocity
     # vw = 3.05

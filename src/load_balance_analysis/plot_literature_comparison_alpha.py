@@ -29,7 +29,7 @@ def plotting_polars_alpha(
         Path(project_dir)
         / "processed_data"
         / "polar_data"
-        / f"VSM_results_alpha_sweep_Rey_5.6_corrected.csv"
+        / f"VSM_results_alpha_sweep_Rey_5.0_corrected.csv"
     )
     data_VSM_alpha_re_56e4 = pd.read_csv(path_to_csv_VSM_alpha_re_56e4)
 
@@ -43,7 +43,7 @@ def plotting_polars_alpha(
         Path(project_dir)
         / "data"
         / "CFD_polar_data"
-        / "CFD_V3_CL_CD_RANS_Lebesque_2024_Rey_100e4.csv"
+        / "CFD_RANS_Rey_10e5_Poland2025_alpha_sweep_beta_0.csv"
     )
 
     # Get wind tunnel data
@@ -54,6 +54,7 @@ def plotting_polars_alpha(
         / "V3_CL_CD_CS_alpha_sweep_for_beta_0_WindTunnel_Poland_2025_Rey_560e4.csv"
     )
     data_windtunnel = pd.read_csv(path_to_csv)
+
     # Data frames, labels, colors, and linestyles
     data_frame_list = [
         data_CFD_Vire2021_10e5,
@@ -67,10 +68,12 @@ def plotting_polars_alpha(
         rf"VSM Re = $5\times10^5$",
         rf"WT Re = $5\times10^5$",
         # rf"Polars Uri",
+        # rf"CFD Re = $10\times10^5$ -1.02",
+        # rf"CFD Re = $10\times10^5$ +1.02",
     ]
-    colors = ["black", "black", "blue", "red"]
-    linestyles = ["--", "-", "-", "-"]
-    markers = ["*", "*", "", "o"]
+    colors = ["black", "black", "blue", "red", "green", "purple"]
+    linestyles = ["--", "-", "-", "-", "dashdot", "dashdot"]
+    markers = ["*", "*", ".", "o", "x", "x"]
     fmt_wt = "o"
 
     # Plot CL, CD, and CL/CD in subplots
@@ -513,7 +516,7 @@ def plotting_polars_alpha_moments(
         Path(project_dir)
         / "processed_data"
         / "polar_data"
-        / "VSM_results_alpha_sweep_Rey_5.6_corrected_moment.csv"
+        / "VSM_results_alpha_sweep_Rey_5.0_corrected_moment.csv"
     )
     data_VSM_alpha_re_56e4_no_correction_moment = pd.read_csv(
         path_to_csv_VSM_alpha_re_56e4_no_correction_moment

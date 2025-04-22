@@ -93,8 +93,6 @@ dependencies = [
 # You can define additional groups of dependencies here (e.g., development dependencies).
 # These can be installed using the "extras" feature of pip, like so:
 
-#   $ pip install exampleproject[dev]
-
 # These are often referred to as "extras" and provide optional functionality.
 [project.optional-dependencies]
 dev = [

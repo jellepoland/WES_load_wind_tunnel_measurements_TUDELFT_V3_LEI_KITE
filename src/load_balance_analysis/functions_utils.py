@@ -154,16 +154,16 @@ def reduce_df_by_parameter_mean_and_std(
     return result_df
 
 
-def alpha_wind_tunnel_correction(alpha, CL, dalpha=-0.455, dbeta=0.451):
+def alpha_wind_tunnel_correction(alpha, CL, dalpha=-0.470604, dbeta=-0.455995):
     return alpha + dalpha * CL
 
 
-def beta_wind_tunnel_correction(beta, CS, dalpha=-0.455, dbeta=0.451):
+def beta_wind_tunnel_correction(beta, CS, dalpha=-0.470604, dbeta=-0.455995):
     return beta + dbeta * CS
 
 
 def apply_angle_wind_tunnel_corrections_to_df(
-    df: pd.DataFrame, dalpha=-0.455, dbeta=0.451
+    df: pd.DataFrame, dalpha=-0.470604, dbeta=-0.455995
 ) -> pd.DataFrame:
     """
     Apply wind-tunnel corrections to the aerodynamic coefficients and angles.

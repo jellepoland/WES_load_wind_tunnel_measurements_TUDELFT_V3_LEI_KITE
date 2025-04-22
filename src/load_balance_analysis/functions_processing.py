@@ -587,20 +587,9 @@ def apply_wind_tunnel_corrections(df: pd.DataFrame) -> pd.DataFrame:
     """
     Apply wind-tunnel corrections to the aerodynamic coefficients and angles.
 
-    Corrections applied:
-      NO done only later - Δαₜ = -0.818 * C_L       → Correct angle of attack ("aoa_kite")
-      NO done only later - Δβₜ = -0.72 * C_S        → Correct sideslip ("sideslip")
-      - ΔC_D = -0.01 * C_L² - 0.01 * C_S²  → Correct drag coefficient ("C_D")
-      - ΔC_L =  0.025 * C_L       → Correct lift coefficient ("C_L")
-      - ΔC_S =  0.003 * C_S       → Correct side-force coefficient ("C_S")
-      - ΔC_M,y = -0.0053 * C_L    → Correct pitching moment coefficient ("C_pitch")
-      - ΔC_M,Z = -0.0008 * C_S    → Correct yawing moment coefficient ("C_yaw")
-
-    Assumes that the dataframe contains the following columns:
-      - "aoa_kite", "sideslip", "C_D", "C_L", "C_S", "C_pitch", "C_yaw"
-
-    Returns:
-        pd.DataFrame: DataFrame with corrected values.
+    ANGLES are corrected in:
+    - plot_literature_saving.py
+    - plot_reynolds_variation.py
     """
     df_corr = df.copy()
 
