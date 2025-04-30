@@ -152,7 +152,7 @@ def generate_boxplots_vs_sideslip(
             means = [data.mean() for data in box_data]
             axs[i].plot(positions, means, marker="o", linestyle="--", color="black")
             # axs[i].set_title(f"{subplot_titles[i]}")
-            axs[i].set_ylabel(rf"${y_labels[i]}$ [-]")  # , fontsize=fontsize)
+            axs[i].set_ylabel(rf"${y_labels[i]}$ (-)")  # , fontsize=fontsize)
             axs[i].set_xticks(
                 np.arange(
                     np.floor(min(unique_sideslip)), np.ceil(max(unique_sideslip)) + 1, 4

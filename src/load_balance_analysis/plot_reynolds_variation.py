@@ -411,7 +411,7 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_beta_total_kite_support(
 
             # Place the legend at the top center outside the subplots
             fig.legend(
-                handles=custom_lines, loc="upper center", ncol=3
+                handles=custom_lines, loc="upper center", ncol=3, frameon=False
             )  # , fontsize=12)
 
             # axs[0].legend()

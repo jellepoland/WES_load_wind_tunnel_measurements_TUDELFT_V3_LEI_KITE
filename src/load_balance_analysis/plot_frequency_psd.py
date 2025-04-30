@@ -296,12 +296,12 @@ def plot_time_series_aoa_vw(aoa_folder, vw, project_dir, save_path, x_max):
     # Channels to plot
     channels = ["F_X", "F_Y", "F_Z", "M_X", "M_Y", "M_Z"]
     channel_labels = [
-        r"$F_{\mathrm{x}}$ (N)",
-        r"$F_{\mathrm{y}}$ (N)",
-        r"$F_{\mathrm{z}}$ (N)",
-        r"$M_{\mathrm{x}}$ (Nm)",
-        r"$M_{\mathrm{y}}$ (Nm)",
-        r"$M_{\mathrm{z}}$ (Nm)",
+        r"$F_{\mathrm{x}}$",
+        r"$F_{\mathrm{y}}$",
+        r"$F_{\mathrm{z}}$",
+        r"$M_{\mathrm{x}}$",
+        r"$M_{\mathrm{y}}$",
+        r"$M_{\mathrm{z}}$",
     ]
 
     # Time vector
