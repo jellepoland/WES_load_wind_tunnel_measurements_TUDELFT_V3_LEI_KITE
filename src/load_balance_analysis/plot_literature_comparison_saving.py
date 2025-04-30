@@ -147,13 +147,16 @@ def saving_alpha_and_beta_sweeps(
     df_moments_alpha.columns = col_names_moments
 
     ## wind tunnel corrections
+    print(f"\n=== UNCORRECTED ===")
     print(f"df_forces_alpha: {df_forces_alpha.columns}")
     print(f"df_moments_alpha: {df_moments_alpha.columns}")
-    print(df_forces_alpha["aoa"])
-    df_forces_alpha = apply_angle_wind_tunnel_corrections_to_df(df_forces_alpha)
-    print(df_forces_alpha["aoa"])
+    print(f'df_forces_alpha: {df_forces_alpha["aoa"]}')
     print(f"df_moments_alpha: {df_moments_alpha['aoa']}")
+
+    print(f"\n=== CORRECTED ===")
+    df_forces_alpha = apply_angle_wind_tunnel_corrections_to_df(df_forces_alpha)
     df_moments_alpha["aoa"] = df_forces_alpha["aoa"]
+    print(f'df_forces_alpha: {df_forces_alpha["aoa"]}')
     print(f"df_moments_alpha: {df_moments_alpha['aoa']}")
     # Save them out
     df_forces_alpha.to_csv(
@@ -173,8 +176,8 @@ def saving_alpha_and_beta_sweeps(
 
     ### Part 2) BETA sweeps
     vw = 20
-    alpha_high = 11.9
-    alpha_low = 6.8
+    alpha_high = 12.9
+    alpha_low = 7.7
 
     # -- alpha_high
     folder_name = f"alpha_{alpha_high}"

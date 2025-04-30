@@ -54,7 +54,7 @@ def main():
 
     # Merging raw files
     processed_data_zigzag_dir = (
-        Path(project_dir) / "processed_data" / "zigzag_csv" / "alpha_8.9"
+        Path(project_dir) / "processed_data" / "zigzag_csv" / "alpha_9.9"
     )
     save_path_lvm_data_processed = (
         Path(processed_data_zigzag_dir) / "lvm_data_processed.csv"

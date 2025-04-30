@@ -237,7 +237,7 @@ def reading_all_folders(
             aoa_value = float(df_folder["aoa"].unique()[0].replace(",", "."))
         # df_folder["aoa"] = df_folder["aoa"].str.replace("deg", "")
         # aoa_value = folder_name.split("_")[-1]
-        ## Changing alpha by 7.25 deg
+        ## Changing alpha by the offsett deg
         aoa_value_corrected = float(aoa_value) - delta_aoa_rod_to_alpha
         folder_name_corrected = f"alpha_{aoa_value_corrected:.1f}"
         print(f"\nSAVING folder_name_corrected: {folder_name_corrected}")
@@ -259,7 +259,7 @@ def reading_all_folders(
 
 
 def main():
-    delta_aoa_rod_to_alpha = 7.25
+    delta_aoa_rod_to_alpha = 6.3  # 7.25
 
     ## Doing this for the normal data
     labbook_path = Path(project_dir) / "data" / "labbook.csv"

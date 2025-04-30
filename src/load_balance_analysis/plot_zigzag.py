@@ -73,11 +73,11 @@ from load_balance_analysis.functions_statistics import (
 #             data_no_zz_sideslip_10 = data_no_zz[data_no_zz["sideslip"] == 10]
 #             # label_list = [
 #             #     rf"{rey:.1f} with zigzag ($\beta = -10^\circ$)",
-#             #     rf"{rey:.1f} Clean ($\beta = -10^\circ$)",
+#             #     rf"{rey:.1f} No zigzag ($\beta = -10^\circ$)",
 #             #     rf"{rey:.1f} with zigzag ($\beta = 0^\circ$)",
-#             #     rf"{rey:.1f} Clean ($\beta = 0^\circ$)",
+#             #     rf"{rey:.1f} No zigzag ($\beta = 0^\circ$)",
 #             #     rf"{rey:.1f} with zigzag ($\beta = 10^\circ$)",
-#             #     rf"{rey:.1f} Clean ($\beta = 10^\circ$)",
+#             #     rf"{rey:.1f} No zigzag ($\beta = 10^\circ$)",
 #             # ]
 #             # data_list = [
 #             #     data_zz_sideslip_min10,
@@ -89,11 +89,11 @@ from load_balance_analysis.functions_statistics import (
 #             # ]
 #             label_list = [
 #                 rf"{rey:.1f} with zigzag ($\beta = -10^\circ$)",
-#                 rf"{rey:.1f} Clean ($\beta = -10^\circ$)",
+#                 rf"{rey:.1f} No zigzag ($\beta = -10^\circ$)",
 #                 rf"{rey:.1f} with zigzag ($\beta = 0^\circ$)",
-#                 rf"{rey:.1f} Clean ($\beta = 0^\circ$)",
+#                 rf"{rey:.1f} No zigzag ($\beta = 0^\circ$)",
 #                 rf"{rey:.1f} with zigzag ($\beta = 10^\circ$)",
-#                 rf"{rey:.1f} Clean ($\beta = 10^\circ$)",
+#                 rf"{rey:.1f} No zigzag ($\beta = 10^\circ$)",
 #             ]
 #             data_list = [
 #                 data_zz_sideslip_min10,
@@ -109,7 +109,7 @@ from load_balance_analysis.functions_statistics import (
 
 #             label_list = [
 #                 rf"{rey:.1f} with zigzag",
-#                 rf"{rey:.1f} Clean",
+#                 rf"{rey:.1f} No zigzag",
 #             ]
 #             data_list = [
 #                 data_zz_sideslip,
@@ -272,7 +272,7 @@ from load_balance_analysis.functions_statistics import (
 #             [0],
 #             marker="o",
 #             color="blue",
-#             label=r"Clean $\beta = 0^\circ$",
+#             label=r"No zigzag $\beta = 0^\circ$",
 #             markersize=8,
 #             linestyle="None",
 #         ),
@@ -290,7 +290,7 @@ from load_balance_analysis.functions_statistics import (
 #             [0],
 #             marker="v",
 #             color="blue",
-#             label=r"Clean $\beta = -10^\circ$",
+#             label=r"No zigzag $\beta = -10^\circ$",
 #             markersize=8,
 #             linestyle="None",
 #         ),
@@ -308,7 +308,7 @@ from load_balance_analysis.functions_statistics import (
 #             [0],
 #             marker="^",
 #             color="blue",
-#             label=r"Clean $\beta = 10^\circ$",
+#             label=r"No zigzag $\beta = 10^\circ$",
 #             markersize=8,
 #             linestyle="None",
 #         ),
@@ -411,13 +411,13 @@ def plot_zigzag(
             data_no_zz_sideslip_0 = data_no_zz[data_no_zz["sideslip"] == 0]
             data_no_zz_sideslip_10 = data_no_zz[data_no_zz["sideslip"] == 10]
 
-            # Changed order here: "Clean" first, then "with zigzag"
+            # Changed order here: "No zigzag" first, then "with zigzag"
             label_list = [
-                rf"{rey:.1f} Clean ($\beta = -10^\circ$)",
+                rf"{rey:.1f} No zigzag ($\beta = -10^\circ$)",
                 rf"{rey:.1f} with zigzag ($\beta = -10^\circ$)",
-                rf"{rey:.1f} Clean ($\beta = 0^\circ$)",
+                rf"{rey:.1f} No zigzag ($\beta = 0^\circ$)",
                 rf"{rey:.1f} with zigzag ($\beta = 0^\circ$)",
-                rf"{rey:.1f} Clean ($\beta = 10^\circ$)",
+                rf"{rey:.1f} No zigzag ($\beta = 10^\circ$)",
                 rf"{rey:.1f} with zigzag ($\beta = 10^\circ$)",
             ]
             data_list = [
@@ -432,9 +432,9 @@ def plot_zigzag(
             data_zz_sideslip = data_zz[data_zz["sideslip"] == 0]
             data_no_zz_sideslip = data_no_zz[data_no_zz["sideslip"] == 0]
 
-            # Changed order here: "Clean" first, then "with zigzag"
+            # Changed order here: "No zigzag" first, then "with zigzag"
             label_list = [
-                rf"{rey:.1f} Clean",
+                rf"{rey:.1f} No zigzag",
                 rf"{rey:.1f} with zigzag",
             ]
             data_list = [
@@ -534,7 +534,7 @@ def create_grouped_plot(
                 x_positions = np.linspace(
                     group_idx - 0.05, group_idx + 0.05, len(group_data)
                 )
-                # Changed color order to match "Clean" first, "with zigzag" second
+                # Changed color order to match "No zigzag" first, "with zigzag" second
                 color_list = ["blue", "red"]
                 color_list = ["black", "red"]
                 marker_list = ["o", "o"]
@@ -542,7 +542,7 @@ def create_grouped_plot(
                 x_positions = np.linspace(
                     group_idx - 0.25, group_idx + 0.25, len(group_data)
                 )
-                # Changed color order to match "Clean" first, "with zigzag" second
+                # Changed color order to match "No zigzag" first, "with zigzag" second
                 color_list = [
                     "blue",
                     "red",
@@ -593,14 +593,14 @@ def create_grouped_plot(
             ax.set_xlim(xlim[0] + padding, xlim[1] - padding)
 
     axs[0].set_ylim(0.65, 0.90)
-    # Create legend elements - Changed order to "Clean" first, "With zigzag" second
+    # Create legend elements - Changed order to "No zigzag" first, "With zigzag" second
     legend_elements = [
         plt.Line2D(
             [0],
             [0],
             marker="o",
             color=color_list[0],
-            label=r"Clean $\beta = 0^\circ$",
+            label=r"No zigzag $\beta = 0^\circ$",
             markersize=8,
             linestyle="None",
         ),
@@ -618,7 +618,7 @@ def create_grouped_plot(
             [0],
             marker="v",
             color=color_list[0],
-            label=r"Clean $\beta = -10^\circ$",
+            label=r"No zigzag $\beta = -10^\circ$",
             markersize=8,
             linestyle="None",
         ),
@@ -636,7 +636,7 @@ def create_grouped_plot(
             [0],
             marker="^",
             color=color_list[0],
-            label=r"Clean $\beta = 10^\circ$",
+            label=r"No zigzag $\beta = 10^\circ$",
             markersize=8,
             linestyle="None",
         ),
@@ -657,7 +657,7 @@ def create_grouped_plot(
         loc="lower center",  # Changed to lower center
         bbox_to_anchor=(0.5, 0.0),  # Adjust y value negative to push further down
         ncol=3,
-        frameon=True,
+        frameon=False,
     )
 
     plt.tight_layout()
@@ -678,7 +678,7 @@ def main(results_dir: Path, project_dir: Path) -> None:
         Path(project_dir)
         / "processed_data"
         / "zigzag_csv"
-        / "alpha_8.9"
+        / "alpha_9.9"
         / "lvm_data_processed.csv"
     )
     plot_zigzag(

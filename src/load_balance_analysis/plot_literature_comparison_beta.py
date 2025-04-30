@@ -109,7 +109,7 @@ def plot_single_row(
                     upper_bound,
                     color=color,
                     alpha=0.15,
-                    label=f"WT CI of {confidence_interval}%",
+                    label=f"WT CI of {confidence_interval}\%",
                 )
 
             ### Also plot the negative-beta mirror curves:
@@ -214,7 +214,7 @@ def plot_single_row(
             label=r"WT Re = $5 \times 10^5$",
             linestyle="-",
         ),
-        Patch(facecolor="red", edgecolor="none", alpha=0.15, label=r"WT CI of 99%"),
+        Patch(facecolor="red", edgecolor="none", alpha=0.15, label=r"WT CI of 99\%"),
         plt.Line2D(
             [0],
             [0],
@@ -239,7 +239,7 @@ def plot_single_row(
         loc="lower center",
         bbox_to_anchor=(0.5, 0.01),
         ncol=3,
-        frameon=True,
+        frameon=False,
     )
 
     # Finally save
@@ -316,7 +316,7 @@ def plot_double_row(
                 is_with_x_label=False,
                 is_with_x_ticks=False,
                 y_label=(
-                    r"High $\alpha = 11.9$°" + f"\n \n" + y_axis_labels[var]
+                    r"High $\alpha = 12.5$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -340,7 +340,7 @@ def plot_double_row(
                     upper_bound,
                     color=color,
                     alpha=0.15,
-                    label=f"WT CI of {confidence_interval}%",
+                    label=f"WT CI of {confidence_interval}\%",
                 )
             # Also plot negative-beta mirror curves
             for j, var in enumerate(variables_to_plot):
@@ -408,7 +408,7 @@ def plot_double_row(
                 markersize_i,
                 x_label=r"$\beta$ (°)",
                 y_label=(
-                    r"Low $\alpha = 6.8$°" + f"\n \n" + y_axis_labels[var]
+                    r"Low $\alpha = 7.4$°" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -430,7 +430,7 @@ def plot_double_row(
                     upper_bound,
                     color=color,
                     alpha=0.15,
-                    label=f"WT CI of {confidence_interval}%",
+                    label=f"WT CI of {confidence_interval}\%",
                 )
             for j, var in enumerate(variables_to_plot):
                 if var in ["CS", "CMx", "CMz"]:
@@ -486,8 +486,9 @@ def plot_double_row(
     # Apply global xlim/ylim if provided (assumed as a list of three values for columns)
     if "CL" in variables_to_plot:
         axs[0, 1].set_ylim(0.05, 0.25)
-        axs[0, 2].set_ylim(-0.15, 0.05)
-        axs[1, 2].set_ylim(-0.2, 0.05)
+        axs[0, 2].set_ylim(-0.20, 0.05)
+        # axs[1, 0].set_ylim(0.45, 0.8)
+        axs[1, 2].set_ylim(-0.25, 0.05)
     elif "CMx" in variables_to_plot:
         axs[0, 0].set_ylim(-0.3, 0.1)
         # axs[0, 1].set_ylim(-0.3, 0.05)
@@ -543,7 +544,7 @@ def plot_double_row(
         #     label=r"WT Re = $5 \times 10^5$",
         #     linestyle="-",
         # ),
-        Patch(facecolor="red", edgecolor="none", alpha=0.15, label="WT CI of 99%"),
+        Patch(facecolor="red", edgecolor="none", alpha=0.15, label="WT CI of 99\%"),
         plt.Line2D(
             [0],
             [0],
@@ -567,7 +568,7 @@ def plot_double_row(
         loc="lower center",
         bbox_to_anchor=(0.5, 0.01),
         ncol=3,
-        frameon=True,
+        frameon=False,
     )
 
     # ---------- Save the Figure ----------
@@ -621,21 +622,21 @@ def plotting_polars_beta(
     )
 
     # Load Wind Tunnel data
-    data_WT_beta_re_56e4_alpha_6_8 = pd.read_csv(
+    data_WT_beta_re_56e4_alpha_7_7 = pd.read_csv(
         Path(project_dir)
         / "processed_data"
         / "polar_data"
-        / "V3_CL_CD_CS_beta_sweep_alpha_6.8_WindTunnel_Poland_2025_Rey_560e4.csv"
+        / "V3_CL_CD_CS_beta_sweep_alpha_7.7_WindTunnel_Poland_2025_Rey_560e4.csv"
     )
-    data_WT_beta_re_56e4_alpha_11_9 = pd.read_csv(
+    data_WT_beta_re_56e4_alpha_12_9 = pd.read_csv(
         Path(project_dir)
         / "processed_data"
         / "polar_data"
-        / "V3_CL_CD_CS_beta_sweep_alpha_11.9_WindTunnel_Poland_2025_Rey_560e4.csv"
+        / "V3_CL_CD_CS_beta_sweep_alpha_12.9_WindTunnel_Poland_2025_Rey_560e4.csv"
     )
     # ## correcting the beta
-    # data_WT_beta_re_56e4_alpha_11_9["beta"] = -data_WT_beta_re_56e4_alpha_11_9["beta"]
-    # data_WT_beta_re_56e4_alpha_6_8["beta"] = -data_WT_beta_re_56e4_alpha_6_8["beta"]
+    # data_WT_beta_re_56e4_alpha_12_9["beta"] = -data_WT_beta_re_56e4_alpha_12_9["beta"]
+    # data_WT_beta_re_56e4_alpha_7_7["beta"] = -data_WT_beta_re_56e4_alpha_7_7["beta"]
 
     ### 1. literature_polars_beta_high_alpha
     plot_single_row(
@@ -643,7 +644,7 @@ def plotting_polars_beta(
         data_frames=[
             data_lebesque_re_100e4_alpha_1195,
             data_VSM_beta_re_56e4_alpha_1195_corrected,
-            data_WT_beta_re_56e4_alpha_11_9,
+            data_WT_beta_re_56e4_alpha_12_9,
         ],
         labels=[
             rf"CFD Re = $10\times10^5$ (Struts)",
@@ -652,7 +653,7 @@ def plotting_polars_beta(
         ],
         colors=["black", "blue", "red"],
         linestyles=["-", "-", "-"],
-        markers=["*", "", "o"],
+        markers=["*", ".", "o"],
         file_name=f"literature_polars_beta_high_alpha",
         confidence_interval=confidence_interval,
         axs_titles=["CL (High Alpha)", "CD (High Alpha)", "CS (High Alpha)"],
@@ -664,7 +665,7 @@ def plotting_polars_beta(
         results_dir,
         data_frames=[
             data_VSM_beta_re_56e4_alpha_675_corrected,
-            data_WT_beta_re_56e4_alpha_6_8,
+            data_WT_beta_re_56e4_alpha_7_7,
         ],
         labels=[
             # rf"VSM Re = $5\times10^5$",
@@ -673,7 +674,7 @@ def plotting_polars_beta(
         ],
         colors=["blue", "red"],
         linestyles=["-", "-"],
-        markers=["", "o"],
+        markers=[".", "o"],
         confidence_interval=confidence_interval,
         file_name=f"literature_polars_beta_low_alpha",
         axs_titles=["CL (Low Alpha)", "CD (Low Alpha)", "CS (Low Alpha)"],
@@ -689,7 +690,7 @@ def plotting_polars_beta(
     #         data_VSM_beta_re_56e4_alpha_1195_breukels_stall,
     #         data_VSM_beta_re_56e4_alpha_1195_corrected,
     #         data_VSM_beta_re_56e4_alpha_1195_corrected_stall,
-    #         data_WT_beta_re_56e4_alpha_11_9,
+    #         data_WT_beta_re_56e4_alpha_12_9,
     #     ],
     #     labels=[
     #         r"VSM Breukels",
@@ -715,7 +716,7 @@ def plotting_polars_beta(
     #         data_VSM_beta_re_56e4_alpha_675_breukels_stall,
     #         data_VSM_beta_re_56e4_alpha_675_corrected,
     #         data_VSM_beta_re_56e4_alpha_675_corrected_stall,
-    #         data_WT_beta_re_56e4_alpha_6_8,
+    #         data_WT_beta_re_56e4_alpha_7_7,
     #     ],
     #     labels=[
     #         r"VSM Breukels",
@@ -740,7 +741,7 @@ def plotting_polars_beta(
         high_data_frames=[
             data_lebesque_re_100e4_alpha_1195,
             data_VSM_beta_re_56e4_alpha_1195_corrected,
-            data_WT_beta_re_56e4_alpha_11_9,
+            data_WT_beta_re_56e4_alpha_12_9,
         ],
         high_labels=[
             rf"CFD Re = $10\times10^5$ $\alpha = 13$° (Struts)",
@@ -749,10 +750,10 @@ def plotting_polars_beta(
         ],
         high_colors=["black", "blue", "red"],
         high_linestyles=["-", "-", "-"],
-        high_markers=["*", "", "o"],
+        high_markers=["*", ".", "o"],
         low_data_frames=[
             data_VSM_beta_re_56e4_alpha_675_corrected,
-            data_WT_beta_re_56e4_alpha_6_8,
+            data_WT_beta_re_56e4_alpha_7_7,
         ],
         low_labels=[
             rf"VSM Re = $5\times10^5$",
@@ -760,7 +761,7 @@ def plotting_polars_beta(
         ],
         low_colors=["blue", "red"],
         low_linestyles=["-", "-"],
-        low_markers=["", "o"],
+        low_markers=[".", "o"],
         file_name="literature_polars_beta_double_alpha",
         confidence_interval=confidence_interval,
         axs_titles_high=["CL (High Alpha)", "CD (High Alpha)", "CS (High Alpha)"],
@@ -770,9 +771,9 @@ def plotting_polars_beta(
     # printing the averaged alpha values
     from load_balance_analysis.functions_utils import alpha_wind_tunnel_correction
 
-    for alpha in [6.75, 11.95]:
+    for alpha in [7.7, 12.9]:
         print(f"\n alpha: {alpha}")
-        for cl in data_WT_beta_re_56e4_alpha_6_8["CL"]:
+        for cl in data_WT_beta_re_56e4_alpha_7_7["CL"]:
             print(
                 f"alpha: {alpha} CL: {cl} corrected alpha: {alpha_wind_tunnel_correction(alpha, cl)}"
             )
@@ -786,12 +787,9 @@ def plotting_polars_beta_moments(
     """
     Plots CMx, CMy, CMz vs beta for high-alpha and low-alpha cases, comparing
     no-correction vs correction for VSM, plus wind tunnel data.
-
-    The file names are assumed to have '_moment' appended for the VSM data,
-    e.g. 'VSM_results_beta_sweep_Rey_5.0_alpha_675_no_correction_moment.csv'.
     """
     polar_dir = Path(project_dir) / "processed_data" / "polar_data"
-    # 1) Load VSM (High alpha = 11.95 deg) moment data
+    # 1) Load VSM (High alpha = 12.95 deg) moment data
     # data_VSM_beta_re_56e4_alpha_1195_breukels_moment = pd.read_csv(
     #     Path(polar_dir)
     #     / "VSM_results_beta_sweep_Rey_5.0_alpha_1195_breukels_moment.csv"
@@ -827,26 +825,26 @@ def plotting_polars_beta_moments(
     # )
 
     # 3) Load Wind Tunnel moment data
-    #    (Assuming you saved them as "V3_CMx_CMy_CMz_beta_sweep_alpha_6_8_..." etc.)
-    data_WT_beta_re_56e4_alpha_6_8_moment = pd.read_csv(
+    #    (Assuming you saved them as "V3_CMx_CMy_CMz_beta_sweep_alpha_7_7_..." etc.)
+    data_WT_beta_re_56e4_alpha_7_7_moment = pd.read_csv(
         Path(project_dir)
         / "processed_data"
         / "polar_data"
-        / "V3_CMx_CMy_CMz_beta_sweep_alpha_6.8_WindTunnel_Poland_2025_Rey_560e4.csv"
+        / "V3_CMx_CMy_CMz_beta_sweep_alpha_7.7_WindTunnel_Poland_2025_Rey_560e4.csv"
     )
-    data_WT_beta_re_56e4_alpha_11_9_moment = pd.read_csv(
+    data_WT_beta_re_56e4_alpha_12_9_moment = pd.read_csv(
         Path(project_dir)
         / "processed_data"
         / "polar_data"
-        / "V3_CMx_CMy_CMz_beta_sweep_alpha_11.9_WindTunnel_Poland_2025_Rey_560e4.csv"
+        / "V3_CMx_CMy_CMz_beta_sweep_alpha_12.9_WindTunnel_Poland_2025_Rey_560e4.csv"
     )
 
     # ## correcting the beta
-    # data_WT_beta_re_56e4_alpha_11_9_moment["beta"] = (
-    #     -data_WT_beta_re_56e4_alpha_11_9_moment["beta"]
+    # data_WT_beta_re_56e4_alpha_12_9_moment["beta"] = (
+    #     -data_WT_beta_re_56e4_alpha_12_9_moment["beta"]
     # )
-    # data_WT_beta_re_56e4_alpha_6_8_moment["beta"] = (
-    #     -data_WT_beta_re_56e4_alpha_6_8_moment["beta"]
+    # data_WT_beta_re_56e4_alpha_7_7_moment["beta"] = (
+    #     -data_WT_beta_re_56e4_alpha_7_7_moment["beta"]
     # )
 
     # 1. moment_literature_polars_beta_high_alpha_correction_vs_no_correction
@@ -857,7 +855,7 @@ def plotting_polars_beta_moments(
     #         data_VSM_beta_re_56e4_alpha_675_breukels_stall_moment,
     #         data_VSM_beta_re_56e4_alpha_675_corrected_moment,
     #         data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment,
-    #         data_WT_beta_re_56e4_alpha_6_8_moment,
+    #         data_WT_beta_re_56e4_alpha_7_7_moment,
     #     ],
     #     labels=[
     #         r"VSM Breukels",
@@ -869,7 +867,7 @@ def plotting_polars_beta_moments(
     #     colors=["blue", "blue", "green", "green", "red"],
     #     linestyles=["--", "-", "--", "-", "-"],
     #     markers=["s", "s", "+", "+", "o"],
-    #     file_name="moment_literature_polars_beta_alpha_6_8_correction_and_stall_effect",
+    #     file_name="moment_literature_polars_beta_alpha_7_7_correction_and_stall_effect",
     #     confidence_interval=confidence_interval,
     #     axs_titles=["CMx (High Alpha)", "CMy (High Alpha)", "CMz (High Alpha)"],
     #     legend_location_index=0,
@@ -886,7 +884,7 @@ def plotting_polars_beta_moments(
     #         data_VSM_beta_re_56e4_alpha_1195_breukels_stall_moment,
     #         data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
     #         data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment,
-    #         data_WT_beta_re_56e4_alpha_11_9_moment,
+    #         data_WT_beta_re_56e4_alpha_12_9_moment,
     #     ],
     #     labels=[
     #         r"VSM Breukels",
@@ -898,7 +896,7 @@ def plotting_polars_beta_moments(
     #     colors=["blue", "blue", "green", "green", "red"],
     #     linestyles=["--", "-", "--", "-", "-"],
     #     markers=["", "", "+", "+", "o"],
-    #     file_name="moment_literature_polars_beta_alpha_11_95_correction_and_stall_effect",
+    #     file_name="moment_literature_polars_beta_alpha_12_95_correction_and_stall_effect",
     #     confidence_interval=confidence_interval,
     #     axs_titles=["CMx (Low Alpha)", "CMy (Low Alpha)", "CMz (Low Alpha)"],
     #     legend_location_index=0,
@@ -912,7 +910,7 @@ def plotting_polars_beta_moments(
         results_dir=results_dir,
         data_frames=[
             data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
-            data_WT_beta_re_56e4_alpha_11_9_moment,
+            data_WT_beta_re_56e4_alpha_12_9_moment,
         ],
         labels=[
             r"VSM $\mathrm{Re} = 5\times10^5$",
@@ -920,7 +918,7 @@ def plotting_polars_beta_moments(
         ],
         colors=["blue", "red"],
         linestyles=["-", "-"],
-        markers=["", "o"],
+        markers=[".", "o"],
         file_name="moment_literature_polars_beta_high_alpha",
         confidence_interval=confidence_interval,
         axs_titles=["CMx (High Alpha) moment", "CMy (High Alpha)", "CMz (High Alpha)"],
@@ -935,7 +933,7 @@ def plotting_polars_beta_moments(
         results_dir=results_dir,
         data_frames=[
             data_VSM_beta_re_56e4_alpha_675_corrected_moment,
-            data_WT_beta_re_56e4_alpha_6_8_moment,
+            data_WT_beta_re_56e4_alpha_7_7_moment,
         ],
         labels=[
             r"VSM $\mathrm{Re} = 5\times10^5$",
@@ -943,7 +941,7 @@ def plotting_polars_beta_moments(
         ],
         colors=["blue", "red"],
         linestyles=["-", "-"],
-        markers=["", "o"],
+        markers=[".", "o"],
         file_name="moment_literature_polars_beta_low_alpha",
         confidence_interval=confidence_interval,
         axs_titles=["CMx (Low Alpha) moment", "CMy (Low Alpha)", "CMz (Low Alpha)"],
@@ -958,7 +956,7 @@ def plotting_polars_beta_moments(
         results_dir,
         high_data_frames=[
             data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
-            data_WT_beta_re_56e4_alpha_11_9_moment,
+            data_WT_beta_re_56e4_alpha_12_9_moment,
         ],
         high_labels=[
             r"VSM $\mathrm{Re} = 5\times10^5$",
@@ -966,10 +964,10 @@ def plotting_polars_beta_moments(
         ],
         high_colors=["blue", "red"],
         high_linestyles=["-", "-"],
-        high_markers=["", "o"],
+        high_markers=[".", "o"],
         low_data_frames=[
             data_VSM_beta_re_56e4_alpha_675_corrected_moment,
-            data_WT_beta_re_56e4_alpha_6_8_moment,
+            data_WT_beta_re_56e4_alpha_7_7_moment,
         ],
         low_labels=[
             r"VSM $\mathrm{Re} = 5\times10^5$",
@@ -977,7 +975,7 @@ def plotting_polars_beta_moments(
         ],
         low_colors=["blue", "red"],
         low_linestyles=["-", "-"],
-        low_markers=["", "o"],
+        low_markers=[".", "o"],
         file_name="moment_literature_polars_beta_double_alpha",
         confidence_interval=confidence_interval,
         axs_titles_high=["CMx (High Alpha)", "CMy (High Alpha)", "CMz (High Alpha)"],

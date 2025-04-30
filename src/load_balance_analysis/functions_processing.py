@@ -481,7 +481,7 @@ def computing_kite_cg(x_hinge, z_hinge, l_cg, alpha_cg_delta_with_rod):
     mu_0 = 1.716e-5
     T_0 = 273.15
     C_suth = 110.4
-    delta_aoa_rod_to_alpha = 7.25
+    delta_aoa_rod_to_alpha = 6.3  # 7.25
     l_rod = 400  # length of the rod from hinge to TE
 
     ### NEW measurements ###
@@ -645,7 +645,7 @@ def processing_raw_lvm_data_into_csv(
     mu_0: float = 1.716e-5,
     T_0: float = 273.15,
     C_suth: float = 110.4,
-    delta_aoa_rod_to_alpha: float = 7.25,
+    delta_aoa_rod_to_alpha: float = 6.3,
 ):
     ##TODO: toggle this on/off
     # computing_kite_cg(x_hinge, z_hinge, l_cg, alpha_cg_delta_with_rod)

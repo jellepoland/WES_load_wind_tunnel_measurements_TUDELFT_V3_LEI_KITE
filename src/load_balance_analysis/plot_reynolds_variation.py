@@ -98,7 +98,7 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_alpha_reynolds_sweep(
                             Re = 6.1
 
                         vw_group = apply_angle_wind_tunnel_corrections_to_df(vw_group)
-                        axs[i].set_xlim(-13, 24)
+                        axs[i].set_xlim(-12, 25)
 
                         plot_on_ax(
                             axs[i],
@@ -464,7 +464,7 @@ def main(results_path, project_dir):
     ]
 
     # alphas_to_be_plotted = [2.35, 4.75, 6.75]
-    alphas_to_be_plotted = [6.8]
+    alphas_to_be_plotted = [7.7]
 
     ### Other figure settings
     columns = ["C_L", "C_D", "C_S", "C_pitch", "C_roll", "C_yaw"]
@@ -506,7 +506,7 @@ def main(results_path, project_dir):
 
     # Create stats_all for beta sweep - Rey plots
     df_all = []
-    alpha = 6.8
+    alpha = 7.7
     for file in os.listdir(Path(folder_dir) / f"alpha_{alpha}"):
         if "raw" in file:
             continue

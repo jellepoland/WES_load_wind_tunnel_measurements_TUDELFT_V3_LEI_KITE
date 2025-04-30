@@ -125,7 +125,7 @@ def plotting_polars_alpha(
                 data_frame[cl_col] + data_frame["CL_ci"],
                 color=color,
                 alpha=alpha,
-                label=f"WT CI of {confidence_interval}%",
+                label=f"WT CI of {confidence_interval}\%",
             )
             axs[1].fill_between(
                 data_frame[aoa_col],
@@ -133,7 +133,7 @@ def plotting_polars_alpha(
                 data_frame[cd_col] + data_frame["CD_ci"],
                 color=color,
                 alpha=alpha,
-                label=f"WT CI of {confidence_interval}%",
+                label=f"WT CI of {confidence_interval}\%",
             )
             axs[2].fill_between(
                 data_frame[aoa_col],
@@ -143,12 +143,12 @@ def plotting_polars_alpha(
                 + data_frame["CL_ci"] / data_frame["CD_ci"],
                 color=color,
                 alpha=alpha,
-                label=f"WT CI of {confidence_interval}%",
+                label=f"WT CI of {confidence_interval}\%",
             )
 
-    axs[0].set_xlim(-13, 24)
-    axs[1].set_xlim(-13, 24)
-    axs[2].set_xlim(-13, 24)
+    axs[0].set_xlim(-12, 25)
+    axs[1].set_xlim(-12, 25)
+    axs[2].set_xlim(-12, 25)
 
     # Format axes
     axs[0].set_xlabel(x_axis_labels["alpha"])
@@ -537,12 +537,12 @@ def plotting_polars_alpha_moments(
         data_WT_alpha_moment,
     ]
     labels = [
-        r"VSM Re = $5\times10^5$ no correction",
+        r"VSM Re = $5\times10^5$",
         r"WT Re = $5\times10^5$",
     ]
     colors = ["blue", "red"]
     linestyles = ["-", "-"]
-    markers = ["", "o"]
+    markers = [".", "o"]
 
     # 3) Create subplots: CMx, CMy, CMz
     fig, axs = plt.subplots(1, 3, figsize=(15, 5))
@@ -609,7 +609,7 @@ def plotting_polars_alpha_moments(
                 data_frame[cmx_col] + data_frame[cmx_ci_col],
                 color=color,
                 alpha=alpha_shade,
-                label=f"WT CI of {confidence_interval}%",
+                label=f"WT CI of {confidence_interval}\%",
             )
             # CMy
             axs[1].fill_between(
@@ -618,7 +618,7 @@ def plotting_polars_alpha_moments(
                 data_frame[cmy_col] + data_frame[cmy_ci_col],
                 color=color,
                 alpha=alpha_shade,
-                label=f"WT CI of {confidence_interval}%",
+                label=f"WT CI of {confidence_interval}\%",
             )
             # CMz
             axs[2].fill_between(
@@ -627,13 +627,13 @@ def plotting_polars_alpha_moments(
                 data_frame[cmz_col] + data_frame[cmz_ci_col],
                 color=color,
                 alpha=alpha_shade,
-                label=f"WT CI of {confidence_interval}%",
+                label=f"WT CI of {confidence_interval}\%",
             )
 
     # 5) Format axes, add labels
     # X-limits (optional)
     for ax in axs:
-        ax.set_xlim(-13, 24)
+        ax.set_xlim(-12, 25)
 
     # Y-limits
     # axs[0].set_ylim(-0.05, 0.05)
