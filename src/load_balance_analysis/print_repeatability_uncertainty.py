@@ -9,7 +9,7 @@ def main(project_dir: Path) -> None:
 
     # Read the interpolation coefficients
     path_support_struc_aero_interp_coeffs = (
-        Path(project_dir) / "processed_data" / "support_struc_aero_interp_coeffs.csv"
+        Path(project_dir) / "data" / "support_struc_aero_interp_coeffs.csv"
     )
     support_struc_aero_interp_coeffs = pd.read_csv(
         path_support_struc_aero_interp_coeffs

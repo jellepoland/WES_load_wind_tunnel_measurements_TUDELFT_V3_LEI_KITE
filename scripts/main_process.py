@@ -28,7 +28,7 @@ def main():
     process_zigzag_csv.main()
 
     # takes ages..
-    # process_vsm.main()
+    process_vsm.main()
     process_bundling_beta_0.main()
 
     ## this function takes long

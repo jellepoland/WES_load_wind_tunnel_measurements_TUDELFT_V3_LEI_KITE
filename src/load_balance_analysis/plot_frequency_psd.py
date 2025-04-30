@@ -353,7 +353,7 @@ def plot_time_series_aoa_vw(aoa_folder, vw, project_dir, save_path, x_max):
 def main(results_dir, project_dir):
     set_plot_style()
     # Path for saving/loading data
-    data_output_path = Path(project_dir) / "processed_data" / "frequency_psd_data.json"
+    data_output_path = Path(project_dir) / "data" / "frequency_psd_data.json"
 
     ## Collect and save wind speed data
     # wind_speed_data = collect_wind_speed_data(project_dir)

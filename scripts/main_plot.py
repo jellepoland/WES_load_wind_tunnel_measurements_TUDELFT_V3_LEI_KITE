@@ -33,7 +33,6 @@ def main():
     plot_critical_trip_height.main(results_path, project_dir)
     plot_frequency_psd.main(results_path, project_dir)
     plot_and_print_sensor_drift.main(results_path, project_dir)
-    # # # # plot_2D_polar_breukels.main(results_path, project_dir)
 
     # printing
     print_kite_dimensions.main(project_dir)

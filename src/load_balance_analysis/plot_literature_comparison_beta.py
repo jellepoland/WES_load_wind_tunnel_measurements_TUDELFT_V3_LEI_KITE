@@ -583,31 +583,31 @@ def plotting_polars_beta(
     polar_dir = Path(project_dir) / "processed_data" / "polar_data"
     # Load VSM data
     # data_VSM_beta_re_56e4_alpha_675_breukels = pd.read_csv(
-    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels.csv"
+    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_740_breukels.csv"
     # )
     # data_VSM_beta_re_56e4_alpha_675_breukels_stall = pd.read_csv(
-    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels_stall.csv"
+    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_740_breukels_stall.csv"
     # )
     data_VSM_beta_re_56e4_alpha_675_corrected = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected.csv"
+        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_740_corrected.csv"
     )
     # data_VSM_beta_re_56e4_alpha_675_corrected_stall = pd.read_csv(
     #     Path(polar_dir)
-    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected_stall.csv"
+    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_740_corrected_stall.csv"
     # )
     # data_VSM_beta_re_56e4_alpha_1195_breukels = pd.read_csv(
-    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_1190_breukels.csv"
+    #     Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_1250_breukels.csv"
     # )
     # data_VSM_beta_re_56e4_alpha_1195_breukels_stall = pd.read_csv(
     #     Path(polar_dir)
     #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_1195_breukels_stall.csv"
     # )
     data_VSM_beta_re_56e4_alpha_1195_corrected = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_1190_corrected.csv"
+        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.1_alpha_1250_corrected.csv"
     )
     # data_VSM_beta_re_56e4_alpha_1195_corrected_stall = pd.read_csv(
     #     Path(polar_dir)
-    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_1190_corrected_stall.csv"
+    #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_1250_corrected_stall.csv"
     # )
 
     # Load Lebesque data
@@ -800,7 +800,7 @@ def plotting_polars_beta_moments(
     # )
     data_VSM_beta_re_56e4_alpha_1195_corrected_moment = pd.read_csv(
         Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.0_alpha_1190_corrected_moment.csv"
+        / "VSM_results_beta_sweep_Rey_5.1_alpha_1250_corrected_moment.csv"
     )
     # data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment = pd.read_csv(
     #     Path(polar_dir)
@@ -809,19 +809,19 @@ def plotting_polars_beta_moments(
 
     # 2) Load VSM (Low alpha = 6.75 deg) moment data
     # data_VSM_beta_re_56e4_alpha_675_breukels_moment = pd.read_csv(
-    #     Path(polar_dir) / "VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels_moment.csv"
+    #     Path(polar_dir) / "VSM_results_beta_sweep_Rey_5.0_alpha_740_breukels_moment.csv"
     # )
     # data_VSM_beta_re_56e4_alpha_675_breukels_stall_moment = pd.read_csv(
     #     Path(polar_dir)
-    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_680_breukels_stall_moment.csv"
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_740_breukels_stall_moment.csv"
     # )
     data_VSM_beta_re_56e4_alpha_675_corrected_moment = pd.read_csv(
         Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected_moment.csv"
+        / "VSM_results_beta_sweep_Rey_5.0_alpha_740_corrected_moment.csv"
     )
     # data_VSM_beta_re_56e4_alpha_675_corrected_stall_moment = pd.read_csv(
     #     Path(polar_dir)
-    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_680_corrected_stall_moment.csv"
+    #     / "VSM_results_beta_sweep_Rey_5.0_alpha_740_corrected_stall_moment.csv"
     # )
 
     # 3) Load Wind Tunnel moment data

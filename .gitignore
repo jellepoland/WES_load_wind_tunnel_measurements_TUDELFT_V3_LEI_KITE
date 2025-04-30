@@ -1,12 +1,14 @@
 # User defined files and folders
 Mark_van_Spronsen/
 data/
+processed_data/0_can_be_deleted/
 processed_data/normal_csv/
+processed_data/polar_data/
+processed_data/uncertainty_table/
 processed_data/without_csv/
 processed_data/zigzag_csv/
-processed_data/zigzag/lvm_data_processed.csv
-processed_data/zigzag/zigzag_processed_data.csv
-processed_data/uncertainty_table/
+processed_data/1_line_interpolation_coefficients.csv
+processed_data/interpolation_coefficients.csv
 
 results/
 media/
