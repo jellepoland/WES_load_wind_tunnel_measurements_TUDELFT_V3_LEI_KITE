@@ -1,5 +1,6 @@
 # Load Balance Analysis
-This repository contains code that transforms raw data into tables and plots used in a paper discussing the results. The raw data is from a subscale rigid leading-edge inflatable kite model measured during a Wind Tunnel campaign in the Open-Jet Facility of the TU Delft in April 2024. The data is published Open-Source and available on ... [link] The paper is titled: "Wind Tunnel Load Measurements Of A Rigid Subscale Leading Edge Inflatable Kite" published Open-Source in Wind Energy science, [link].
+This repository contains code that transforms raw data measured into tables and plots used in a paper, titled "Wind Tunnel Load Measurements Of A Rigid Subscale Leading Edge Inflatable Kite" published Open-Source in Wind Energy science, [link].
+The raw data is from a subscale rigid leading-edge inflatable kite model measured during a Wind Tunnel campaign in the Open-Jet Facility of the TU Delft in April 2024. The data is published Open-Source and available on ... [link] 
 
 ## Installation Instructions
 1. Clone the repository:
