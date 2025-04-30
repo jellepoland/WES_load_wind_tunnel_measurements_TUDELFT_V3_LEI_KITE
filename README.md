@@ -64,7 +64,7 @@ The raw data is from a subscale rigid leading-edge inflatable kite model measure
 
 ## Usages
 1. Follow installation instructions
-2. Download data from [Insert Link](..) and place all data, with current names, inside the `data/` folder
+2. Download data from [Insert Link](..) and place all data, with current names, inside the `data/` folder. The resulting folder should have `data/CFD_polar_data` and `data/normal` etc.
 3. Run `scripts/main.py`
 
 ### Inner Logic
