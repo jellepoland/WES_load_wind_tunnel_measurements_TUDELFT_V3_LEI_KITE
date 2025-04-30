@@ -53,7 +53,7 @@ def analyze_autocorrelation(data, column_name, max_lags=20):
     ax4.set_ylabel("Value at t+1")
 
     plt.tight_layout()
-    plt.show()
+    # plt.show()
 
     # Print numerical autocorrelation values for first few lags
     acf_values = acf(data, nlags=5)

@@ -658,7 +658,7 @@ def plotting_polars_alpha_moments(
     saving_pdf_and_pdf_tex(results_dir, file_name)
 
     # Optionally, display the plot
-    plt.show()
+    # plt.show()
 
 
 #
