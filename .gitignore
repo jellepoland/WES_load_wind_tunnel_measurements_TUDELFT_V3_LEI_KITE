@@ -1,7 +1,7 @@
 # User defined files and folders
 Mark_van_Spronsen/
 data/
-data_that_should_stay_local/
+!data/.gitkeep
 processed_data/0_can_be_deleted/
 processed_data/normal_csv/
 processed_data/polar_data/
