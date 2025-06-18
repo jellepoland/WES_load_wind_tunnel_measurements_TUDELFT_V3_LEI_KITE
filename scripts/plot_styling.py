@@ -1,4 +1,8 @@
 import matplotlib.pyplot as plt
+import matplotlib
+
+matplotlib.use("pgf")
+
 
 PALETTE = {
     "Black": "#000000",
@@ -85,7 +89,7 @@ def visualize_palette():
 #####################
 
 
-def set_plot_style():
+def set_plot_style(is_for_pdf_tex: bool = False):
     """
     Set the default style for plots using LaTeX and custom color palette.
 
@@ -115,7 +119,8 @@ def set_plot_style():
     # plt.style.use("seaborn-v0_8-whitegrid")
     plt.rcParams.update(
         {
-            "text.usetex": True,
+            "text.usetex": is_for_pdf_tex,
+            "text.latex.preamble": r"\usepackage{amsmath}",
             "font.family": "serif",
             "font.serif": ["Computer Modern Roman"],
             ## Axes settings
@@ -223,6 +228,7 @@ def plot_on_ax(
     label: str,
     color: str = None,
     linestyle: str = "-",
+    linewidth: float = None,
     marker: str = None,
     markersize: int = None,
     is_with_grid: bool = True,
@@ -234,6 +240,7 @@ def plot_on_ax(
     is_with_x_ticks: bool = True,
     is_with_y_ticks: bool = True,
     title: str = None,
+    alpha: float = 1.0,
 ):
     """Plot data on a given axis."""
 
@@ -253,37 +260,20 @@ def plot_on_ax(
     else:
         ax.grid(False)
 
-    if color is None:
-        if marker is None:
-            if markersize is None:
-                ax.plot(x, y, label=label, linestyle=linestyle)
-            else:
-                ax.plot(x, y, label=label, linestyle=linestyle, markersize=markersize)
-        else:
-            ax.plot(x, y, label=label, linestyle=linestyle, marker=marker)
-    else:
-        if marker is None:
-            ax.plot(x, y, label=label, color=color, linestyle=linestyle)
-        else:
-            if markersize is None:
-                ax.plot(
-                    x,
-                    y,
-                    label=label,
-                    color=color,
-                    linestyle=linestyle,
-                    marker=marker,
-                )
-            else:
-                ax.plot(
-                    x,
-                    y,
-                    label=label,
-                    color=color,
-                    linestyle=linestyle,
-                    marker=marker,
-                    markersize=markersize,
-                )
+    # Build plot kwargs
+    plot_kwargs = {"label": label, "linestyle": linestyle, "alpha": alpha}
+
+    if color is not None:
+        plot_kwargs["color"] = color
+    if marker is not None:
+        plot_kwargs["marker"] = marker
+    if markersize is not None:
+        plot_kwargs["markersize"] = markersize
+    if linewidth is not None:
+        plot_kwargs["linewidth"] = linewidth
+
+    ax.plot(x, y, **plot_kwargs)
+
     if title is not None:
         ax.set_title(title)
 

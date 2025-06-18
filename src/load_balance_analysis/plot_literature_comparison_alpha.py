@@ -63,7 +63,7 @@ def plotting_polars_alpha(
         data_windtunnel,
     ]
     labels = [
-        rf"CFD Re = $10\times10^5$ (Struts)",
+        rf"CFD Re = $10\times10^5$",
         rf"CFD Re = $5\times10^5$",
         rf"VSM Re = $5\times10^5$",
         rf"WT Re = $5\times10^5$",

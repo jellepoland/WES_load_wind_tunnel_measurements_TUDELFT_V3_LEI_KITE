@@ -41,13 +41,34 @@ x_axis_labels = {
     "Re": r"Re $\times 10^5$ (-)",
 }
 
+# y_axis_labels = {
+#     "CL": r"$C_{\text{L}}$ (-)",
+#     "CD": r"$C_{\text{D}}$ (-)",
+#     "CS": r"$C_{\text{S}}$ (-)",
+#     "CMx": r"$C_{\text{M,x}}$ (-)",
+#     "CMy": r"$C_{\text{M,y}}$ (-)",
+#     "CMz": r"$C_{\text{M,z}}$ (-)",
+#     "L/D": r"$L/D$ (-)",
+#     "kcrit": r"$k_{\text{crit}}$ (mm)",
+# }
+
+# y_axis_labels = {
+#     "CL": r"$C_{\text{L}}$ (-)",
+#     "CD": r"$C_{\text{D}}$ (-)",
+#     "CS": r"$C_{\text{S}}$ (-)",
+#     "CMx": r"$C_{\text{M},\text{x}}$ (-)",  # Use comma as a separator, group properly
+#     "CMy": r"$C_{\text{M},\text{y}}$ (-)",
+#     "CMz": r"$C_{\text{M},\text{z}}$ (-)",
+#     "L/D": r"$L/D$ (-)",
+#     "kcrit": r"$k_{\text{crit}}$ (mm)",
+# }
 y_axis_labels = {
     "CL": r"$C_{\mathrm{L}}$ (-)",
     "CD": r"$C_{\mathrm{D}}$ (-)",
     "CS": r"$C_{\mathrm{S}}$ (-)",
-    "CMx": r"$C_{\mathrm{M,x}}$ (-)",
-    "CMy": r"$C_{\mathrm{M,y}}$ (-)",
-    "CMz": r"$C_{\mathrm{M,z}}$ (-)",
+    "CMx": r"$C_{\mathrm{M},\mathrm{x}}$ (-)",
+    "CMy": r"$C_{\mathrm{M},\mathrm{y}}$ (-)",
+    "CMz": r"$C_{\mathrm{M},\mathrm{z}}$ (-)",
     "L/D": r"$L/D$ (-)",
     "kcrit": r"$k_{\mathrm{crit}}$ (mm)",
 }
