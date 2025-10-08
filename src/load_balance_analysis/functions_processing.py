@@ -251,7 +251,8 @@ def correcting_for_sideslip(df: pd.DataFrame) -> pd.DataFrame:
     but we want it positive counterclockwise in our final x,y,z frame.
     """
     # Flip the sign so beta is now +10° => -10° for the code
-    df["sideslip"] = -df["sideslip"]
+    ##TODO: interesting sign flip
+    df["sideslip"] = df["sideslip"]
 
     # Convert to radians
     beta = np.deg2rad(df["sideslip"])
@@ -714,12 +715,12 @@ def processing_raw_lvm_data_into_csv(
             )
 
             # 1. Substracting the zero-run values
-            df["F_X"] -= zero_F_X
-            df["F_Y"] -= zero_F_Y
-            df["F_Z"] -= zero_F_Z
-            df["M_X"] -= zero_M_X
-            df["M_Y"] -= zero_M_Y
-            df["M_Z"] -= zero_M_Z
+            df["F_X"] = df["F_X"] - zero_F_X
+            df["F_Y"] = df["F_Y"] - zero_F_Y
+            df["F_Z"] = df["F_Z"] - zero_F_Z
+            df["M_X"] = df["M_X"] - zero_M_X
+            df["M_Y"] = df["M_Y"] - zero_M_Y
+            df["M_Z"] = df["M_Z"] - zero_M_Z
 
             ###### Processing the data ######
             # 1. Translate Moments from the load balance origin to the kite cg

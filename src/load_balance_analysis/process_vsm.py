@@ -5,67 +5,11 @@ import numpy as np
 from pathlib import Path
 from load_balance_analysis.functions_utils import project_dir
 
-from VSM.WingGeometry import Wing
-from VSM.BodyAerodynamics import BodyAerodynamics
-from VSM.Solver import Solver
+from VSM.core.WingGeometry import Wing
+from VSM.core.BodyAerodynamics import BodyAerodynamics
+from VSM.core.Solver import Solver
 from VSM.plotting import generate_3D_polar_data
-from VSM.interactive import interactive_plot
-
-
-# def create_body_aero(
-#     file_path,
-#     n_panels,
-#     spanwise_panel_distribution,
-#     is_with_corrected_polar,
-#     path_polar_data_dir,
-#     geom_scaling,
-# ):
-
-#     df = pd.read_csv(file_path, delimiter=",")  # , skiprows=1)
-#     LE_x_array = df["LE_x"].values / geom_scaling
-#     LE_y_array = df["LE_y"].values / geom_scaling
-#     LE_z_array = df["LE_z"].values / geom_scaling
-#     TE_x_array = df["TE_x"].values / geom_scaling
-#     TE_y_array = df["TE_y"].values / geom_scaling
-#     TE_z_array = df["TE_z"].values / geom_scaling
-#     d_tube_array = df["d_tube"].values
-#     camber_array = df["camber"].values
-
-#     ## populating this list
-#     rib_list_from_CAD_LE_TE_and_surfplan_d_tube_camber_19ribs = []
-
-#     for i in range(len(LE_x_array)):
-#         LE = np.array([LE_x_array[i], LE_y_array[i], LE_z_array[i]])
-#         TE = np.array([TE_x_array[i], TE_y_array[i], TE_z_array[i]])
-#         rib_list_from_CAD_LE_TE_and_surfplan_d_tube_camber_19ribs.append(
-#             [LE, TE, ["lei_airfoil_breukels", [d_tube_array[i], camber_array[i]]]]
-#         )
-#     CAD_wing = Wing(n_panels, spanwise_panel_distribution)
-
-#     for i, CAD_rib_i in enumerate(
-#         rib_list_from_CAD_LE_TE_and_surfplan_d_tube_camber_19ribs
-#     ):
-#         CAD_rib_i_0 = CAD_rib_i[0]
-#         CAD_rib_i_1 = CAD_rib_i[1]
-
-#         if is_with_corrected_polar:
-#             ### using corrected polar
-#             df_polar_data = pd.read_csv(
-#                 Path(path_polar_data_dir) / f"corrected_polar_{i}.csv"
-#             )
-#             alpha = df_polar_data["alpha"].values
-#             cl = df_polar_data["cl"].values
-#             cd = df_polar_data["cd"].values
-#             cm = df_polar_data["cm"].values
-#             polar_data = ["polar_data", np.array([alpha, cl, cd, cm])]
-#             CAD_wing.add_section(CAD_rib_i_0, CAD_rib_i_1, polar_data)
-#         else:
-#             ### using breukels
-#             CAD_wing.add_section(CAD_rib_i_0, CAD_rib_i_1, CAD_rib_i[2])
-
-#     body_aero = BodyAerodynamics([CAD_wing])
-
-#     return body_aero
+from VSM.plot_geometry_plotly import interactive_plot
 
 
 def save_polar_data(
@@ -88,6 +32,7 @@ def save_polar_data(
         yaw_rate=0,
         Umag=vw,
     )
+
     print(f"\nReynolds number: {reynolds_number/1e5:.3f}e5\n")
     # Create dataframe and save to CSV
     if angle_type == "angle_of_attack":
@@ -142,30 +87,29 @@ def running_vsm_to_generate_csv_data(
         print("Running VSM with breukels polar")
         name_appendix = "_breukels"
 
-    vsm_input_path = Path(project_dir) / "data" / "vsm_input"
+    # vsm_input_path = Path(project_dir) / "data" / "vsm_input"
 
-    ## scaling down geometry
-    geom_path = Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid.csv"
-    geom_scaled_path = (
-        Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid_scaled.csv"
-    )
-    df = pd.read_csv(geom_path, delimiter=",")  # , skiprows=1)
-    df["LE_x"] = df["LE_x"].values / geom_scaling
-    df["LE_y"] = df["LE_y"].values / geom_scaling
-    df["LE_z"] = df["LE_z"].values / geom_scaling
-    df["TE_x"] = df["TE_x"].values / geom_scaling
-    df["TE_y"] = df["TE_y"].values / geom_scaling
-    df["TE_z"] = df["TE_z"].values / geom_scaling
-    df.to_csv(geom_scaled_path, index=False)
+    # ## scaling down geometry
+    # geom_path = Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid.csv"
+    # geom_scaled_path = (
+    #     Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid_scaled.csv"
+    # )
+    # df = pd.read_csv(geom_path, delimiter=",")  # , skiprows=1)
+    # df["LE_x"] = df["LE_x"].values / geom_scaling
+    # df["LE_y"] = df["LE_y"].values / geom_scaling
+    # df["LE_z"] = df["LE_z"].values / geom_scaling
+    # df["TE_x"] = df["TE_x"].values / geom_scaling
+    # df["TE_y"] = df["TE_y"].values / geom_scaling
+    # df["TE_z"] = df["TE_z"].values / geom_scaling
+    # df.to_csv(geom_scaled_path, index=False)
 
     ### create body_aero
-    body_aero = BodyAerodynamics.from_file(
-        geom_scaled_path,
-        n_panels,
-        spanwise_panel_distribution,
-        is_with_corrected_polar=True,
-        polar_data_dir=vsm_input_path,
-        is_half_wing=True,
+    vsm_input_path = Path(project_dir) / "data" / "vsm_input"
+    geom_scaled_path = Path(vsm_input_path) / "wing_geometry_scaled.yaml"
+    body_aero = BodyAerodynamics.instantiate(
+        n_panels=50,
+        file_path=geom_scaled_path,
+        spanwise_panel_distribution="uniform",
     )
     solver = Solver(reference_point=reference_point)
 
@@ -291,3 +235,29 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    ##TODO: below is a test to verify that the correct projected_area is computed
+    # ### create body_aero
+    # vsm_input_path = Path(project_dir) / "data" / "vsm_input"
+    # geom_scaled_path = Path(vsm_input_path) / "wing_geometry_scaled.yaml"
+    # body_aero = BodyAerodynamics.instantiate(
+    #     n_panels=50,
+    #     file_path=geom_scaled_path,
+    #     spanwise_panel_distribution="uniform",
+    # )
+    # # set va
+    # vw = 18.5
+    # alpha = 7.4
+    # body_aero.va_initialize(
+    #     Umag=vw,
+    #     angle_of_attack=alpha,
+    #     side_slip=0,
+    # )
+    # # set solver
+    # solver = Solver(reference_point=[0, 0, 0])
+    # # solve
+    # results = solver.solve(body_aero)
+    # # print projected_area
+    # print(
+    #     f"projected_area: {results['projected_area']}, true-size: {results['projected_area']*6.5**2}"
+    # )

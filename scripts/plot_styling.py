@@ -231,6 +231,7 @@ def plot_on_ax(
     linewidth: float = None,
     marker: str = None,
     markersize: int = None,
+    markerfillstyle: str = "full",
     is_with_grid: bool = True,
     is_return_ax: bool = False,
     x_label: str = "X-axis",
@@ -271,6 +272,14 @@ def plot_on_ax(
         plot_kwargs["markersize"] = markersize
     if linewidth is not None:
         plot_kwargs["linewidth"] = linewidth
+    if markerfillstyle is not None:
+        if markerfillstyle == "none":
+            plot_kwargs["markerfacecolor"] = "none"
+        else:
+            plot_kwargs["markerfacecolor"] = (
+                color if color is not None else PALETTE["Black"]
+            )
+        # plot_kwargs["markeredgecolor"] = "black"
 
     ax.plot(x, y, **plot_kwargs)
 

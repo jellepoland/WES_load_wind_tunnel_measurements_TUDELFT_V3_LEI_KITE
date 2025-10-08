@@ -15,6 +15,111 @@ from load_balance_analysis.functions_utils import (
 from plot_styling import plot_on_ax
 
 
+# def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_alpha_reynolds_sweep(
+#     results_path: str,
+#     stats_all: pd.DataFrame,
+#     betas_to_be_plotted: str,
+#     plot_speeds: list,
+#     columns: list,
+#     y_labels: list,
+#     subplot_titles: list,
+# ):
+
+#     # # set which wind speeds to plot
+#     # plot_speeds = [5, 10, 15, 20, 25]
+
+#     if len(plot_speeds) < 5:
+#         subfolder = "vw="
+#         for i, v in enumerate(plot_speeds):
+#             if i == 0:
+#                 subfolder = subfolder + f"{v}"
+#             else:
+#                 subfolder = subfolder + f"+{v}"
+#     else:
+#         subfolder = "all_vw"
+
+#     # # Create a new folder to save the plots
+#     # os.makedirs(foldername + "/alpha", exist_ok=True)
+
+#     # sort everything for plotting correctly
+#     stats_plotvsalpha = stats_all.sort_values(by="aoa_kite")
+
+#     # Group the data by sideslip
+#     grouped = stats_plotvsalpha.groupby("sideslip")
+
+#     # Loop through each sideslip value
+#     for sideslip, group in grouped:
+
+#         if sideslip in betas_to_be_plotted:
+#             # Create a subplot with 4 rows and 3 columns
+#             fig, axs = plt.subplots(2, 3, figsize=(15, 10))
+
+#             # Flatten the subplot array for easier indexing
+#             axs = axs.flatten()
+
+#             linestyles = {
+#                 "5": "--",
+#                 "10": "--",
+#                 "15": "-",
+#                 "20": "-",
+#                 "25": "-",
+#             }
+#             markers = {
+#                 "5": "s",
+#                 "10": "X",
+#                 "15": "d",
+#                 "20": "o",
+#                 "25": "*",
+#             }
+
+#             for i, column in enumerate(columns):
+
+#                 if column in ["C_L", "C_D", "C_S"]:
+#                     is_with_x_ticks = False
+#                     is_with_x_label = False
+#                 else:
+#                     is_with_x_ticks = True
+#                     is_with_x_label = True
+
+#                 # Plot each distinct value in the vw column (excluding vw=0 and vw=5)
+#                 for vw, vw_group in group.groupby("vw"):
+#                     if vw in plot_speeds:
+#                         Re = np.around((vw_group["Rey"].mean()) / 1e5, 1)
+
+#                         if vw == 5:
+#                             Re = 1.3
+#                         elif vw == 10:
+#                             Re = 2.5
+#                         elif vw == 15:
+#                             Re = 3.8
+#                         elif vw == 20:
+#                             Re = 5
+#                         elif vw == 25:
+#                             Re = 6.1
+
+#                         vw_group = apply_angle_wind_tunnel_corrections_to_df(vw_group)
+#                         axs[i].set_xlim(-12, 25)
+
+#                         plot_on_ax(
+#                             axs[i],
+#                             vw_group["aoa_kite"],
+#                             vw_group[column],
+#                             linestyle=linestyles[str(int(vw))],
+#                             marker=markers[str(int(vw))],
+#                             label=rf"Re = {Re} $\times$ $10^5$",
+#                             is_with_x_ticks=is_with_x_ticks,
+#                             is_with_x_label=is_with_x_label,
+#                             x_label=x_axis_labels["alpha"],
+#                             y_label=y_axis_labels[y_labels[i]],
+#                         )
+
+#                 if i == 0:
+#                     axs[i].legend()
+#             plt.tight_layout()
+#             filename = f"re_variation_alpha_sweep_at_fixed_beta_{sideslip:.2f}"
+#             saving_pdf_and_pdf_tex(results_path, filename)
+
+
 def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_alpha_reynolds_sweep(
     results_path: str,
     stats_all: pd.DataFrame,
@@ -57,9 +162,17 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_alpha_reynolds_sweep(
             # Flatten the subplot array for easier indexing
             axs = axs.flatten()
 
+            # Color scheme from light to dark as Reynolds number increases
+            colors = {
+                "5": "#87CEEB",  # Light sky blue (Re = 1.3)
+                "10": "#4682B4",  # Steel blue (Re = 2.5)
+                "15": "#FF8C00",  # Dark orange (Re = 3.8)
+                "20": "#DC143C",  # Crimson (Re = 5.0)
+                "25": "#8B0000",  # Dark red (Re = 6.1)
+            }
             linestyles = {
-                "5": "--",
-                "10": "--",
+                "5": "-",
+                "10": "-",
                 "15": "-",
                 "20": "-",
                 "25": "-",
@@ -100,17 +213,26 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_alpha_reynolds_sweep(
                         vw_group = apply_angle_wind_tunnel_corrections_to_df(vw_group)
                         axs[i].set_xlim(-12, 25)
 
+                        # Special case for position 2 (1st row, 3rd column): plot CL/CD
+                        if i == 2:
+                            y_data = vw_group["C_L"] / vw_group["C_D"]
+                            y_label = r"$C_\textrm{L}/C_\textrm{D}$"
+                        else:
+                            y_data = vw_group[column]
+                            y_label = y_axis_labels[y_labels[i]]
+
                         plot_on_ax(
                             axs[i],
                             vw_group["aoa_kite"],
-                            vw_group[column],
+                            y_data,
                             linestyle=linestyles[str(int(vw))],
                             marker=markers[str(int(vw))],
+                            color=colors[str(int(vw))],
                             label=rf"Re = {Re} $\times$ $10^5$",
                             is_with_x_ticks=is_with_x_ticks,
                             is_with_x_label=is_with_x_label,
                             x_label=x_axis_labels["alpha"],
-                            y_label=y_axis_labels[y_labels[i]],
+                            y_label=y_label,
                         )
 
                 if i == 0:
@@ -161,12 +283,20 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_beta_reynolds_sweep(
                 # Flatten the subplot array for easier indexing
                 axs = axs.flatten()
 
+                # Color scheme from light to dark as Reynolds number increases
+                colors = {
+                    "5": "#87CEEB",  # Light sky blue (Re = 1.3)
+                    "10": "#4682B4",  # Steel blue (Re = 2.5)
+                    "15": "#FF8C00",  # Dark orange (Re = 3.8)
+                    "20": "#DC143C",  # Crimson (Re = 5.0)
+                    "25": "#8B0000",  # Dark red (Re = 6.1)
+                }
                 linestyles = {
-                    "5": "--",
-                    "10": "--",
-                    "15": "--",
-                    "20": "--",
-                    "25": "--",
+                    "5": "-",
+                    "10": "-",
+                    "15": "-",
+                    "20": "-",
+                    "25": "-",
                 }
                 markers = {
                     "5": "s",
@@ -209,6 +339,7 @@ def plotting_CL_CD_CS_Pitch_Roll_Yaw_vs_beta_reynolds_sweep(
                                 vw_group[column],
                                 linestyle=linestyles[str(int(vw))],
                                 marker=markers[str(int(vw))],
+                                color=colors[str(int(vw))],
                                 label=rf"Re = {Re} $\times$ $10^5$",
                                 is_with_x_ticks=is_with_x_ticks,
                                 is_with_x_label=is_with_x_label,

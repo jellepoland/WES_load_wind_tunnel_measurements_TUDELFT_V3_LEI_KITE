@@ -257,12 +257,12 @@ def main(results_path, project_dir):
             k_crit_mm,
             # marker=markers[i],
             linestyle=linestyles[i],
-            label=r"$\textrm{Re}_{\textrm{k,crit}}$" + f" = {Rek_crit}",
+            label=r"$\textrm{Re}_{\textrm{k,crit}}$" + f" = {Rek_crit}" + r" $(-)$",
             color="black",
         )
 
     # Set labels and title
-    ax.set_xlabel(r"$\textrm{Re} \times 10^5$ (-)")
+    ax.set_xlabel(r"$\textrm{Re} \times 10^5$ $(-)$")
     U_arr = np.array([5, 10, 15, 20, 25])  # Flow velocities in m/s
     re_arr = [1.3, 2.5, 3.8, 5, 6.1]
     ax.set_xticks(re_arr)
@@ -271,7 +271,9 @@ def main(results_path, project_dir):
 
     # Add reference line for the trip height
     trip_height = 0.2  # [mm]
-    ax.axhline(y=trip_height, color="red", linestyle="--", label=rf"$k=0.2$")
+    ax.axhline(
+        y=trip_height, color="red", linestyle="--", label=r"$k=0.2$ $(\textrm{mm})$"
+    )
 
     ax.legend(ncols=1)
     ax.grid(True, alpha=0.3)

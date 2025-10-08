@@ -35,18 +35,6 @@ def plot_single_row(
     xlim=None,
     ylim=None,
 ):
-    # Helper to plot lines/markers on an axis
-    def plot_on_ax(ax, x, y, label, color, linestyle, marker, markersize):
-        ax.plot(
-            x,
-            y,
-            label=label,
-            color=color,
-            linestyle=linestyle,
-            marker=marker,
-            markersize=markersize,
-        )
-
     fig, axs = plt.subplots(1, 3, figsize=(15, 5))  # Three subplots in one row
 
     for i, (data_frame, label, color, linestyle, marker) in enumerate(
@@ -267,21 +255,6 @@ def plot_double_row(
     xlim=None,
     ylim=None,
 ):
-    # import matplotlib.pyplot as plt
-    # from matplotlib.patches import Patch
-
-    # # Helper to plot lines/markers on an axis
-    # def plot_on_ax(ax, x, y, label, color, linestyle, marker, markersize):
-    #     ax.plot(
-    #         x,
-    #         y,
-    #         label=label,
-    #         color=color,
-    #         linestyle=linestyle,
-    #         marker=marker,
-    #         markersize=markersize,
-    #     )
-
     # Create a figure with 2 rows and 3 columns
     fig, axs = plt.subplots(2, 3, figsize=(14, 8))
 
@@ -308,15 +281,15 @@ def plot_double_row(
                 axs[0, j],
                 x_data,
                 y_data,
-                label,
-                color,
-                linestyle,
-                marker,
-                markersize_i,
+                label=label,
+                color=color,
+                linestyle=linestyle,
+                marker=marker,
+                markersize=markersize_i,
                 is_with_x_label=False,
                 is_with_x_ticks=False,
                 y_label=(
-                    r"High $\alpha = 12.5$°" + f"\n \n" + y_axis_labels[var]
+                    r"High $\alpha = 12.5^{\circ}$" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
@@ -397,24 +370,27 @@ def plot_double_row(
                 if var == "CS"
                 else data_frame[var]
             )
+            # FIX: Use axs[1, j] for second row
             plot_on_ax(
                 axs[1, j],
                 x_data,
                 y_data,
-                None,
-                color,
-                linestyle,
-                marker,
-                markersize_i,
-                x_label=r"$\beta$ (°)",
+                label=None,
+                color=color,
+                linestyle=linestyle,
+                marker=marker,
+                markersize=markersize_i,
+                x_label=r"$\beta (^{\circ})$",
                 y_label=(
-                    r"Low $\alpha = 7.4$°" + f"\n \n" + y_axis_labels[var]
+                    r"Low $\alpha = 7.4^{\circ}$" + f"\n \n" + y_axis_labels[var]
                     if j == 0
                     else y_axis_labels[var]
                 ),
             )
 
+        # Optionally plot confidence intervals for "WT" data
         if "WT" in label and show_ci:
+            # Fill CI on positive beta
             for j, var in enumerate(variables_to_plot):
                 if var == "CS":
                     main_y = data_frame[var] / ratio_projected_area_to_side_area
@@ -432,6 +408,7 @@ def plot_double_row(
                     alpha=0.15,
                     label=f"WT CI of {confidence_interval}\%",
                 )
+            # Also plot negative-beta mirror curves
             for j, var in enumerate(variables_to_plot):
                 if var in ["CS", "CMx", "CMz"]:
                     main_y = data_frame[var] / ratio_projected_area_to_side_area
@@ -473,7 +450,7 @@ def plot_double_row(
     for row in range(2):
         for j in range(3):
             axs[row, j].set_xlim(0, 20)
-            # axs[row, j].set_xlabel(r"$\beta$ [°]")
+            # axs[row, j].set_xlabel(r"$\beta$ [^{\circ}]")
             # Optionally, set y-axis labels on left-most column only
             # if j == 0:
             # axs[row, j].set_ylabel(y_axis_labels[variables_to_plot[0]])
@@ -507,10 +484,10 @@ def plot_double_row(
     for i in range(len(high_data_frames)):
         # print(f"high_labels[i]: {high_labels[i]}")
         # if high_labels[i] == "CFD Re = $10\times10^5$ (Struts)":
-        #     label = high_labels[i] + rf" $\alpha = 12$°"
+        #     label = high_labels[i] + rf" $\alpha = 12$^{\circ}"
         # else:
         #     print(f"VSM or WT in high_labels[i]: {high_labels[i]}")
-        #     label = high_labels[i] + rf" $\alpha = 6.5$, $11.6$°"
+        #     label = high_labels[i] + rf" $\alpha = 6.5$, $11.6$^{\circ}"
 
         legend_elements.append(
             plt.Line2D(
@@ -744,9 +721,9 @@ def plotting_polars_beta(
             data_WT_beta_re_56e4_alpha_12_9,
         ],
         high_labels=[
-            rf"CFD Re = $10\times10^5$ $\alpha = 13$° (Struts)",
-            rf"VSM Re = $5\times10^5$",
-            rf"WT Re = $5\times10^5$",
+            r"CFD Re = $10\times10^5$ $(\alpha = 13.02^{\circ})$",
+            r"VSM Re = $5\times10^5$ (no struts)",
+            r"WT Re = $5\times10^5$",
         ],
         high_colors=["black", "blue", "red"],
         high_linestyles=["-", "-", "-"],
@@ -756,8 +733,8 @@ def plotting_polars_beta(
             data_WT_beta_re_56e4_alpha_7_7,
         ],
         low_labels=[
-            rf"VSM Re = $5\times10^5$",
-            rf"WT Re = $5\times10^5$",
+            r"VSM Re = $5\times10^5$",
+            r"WT Re = $5\times10^5$",
         ],
         low_colors=["blue", "red"],
         low_linestyles=["-", "-"],
@@ -913,7 +890,7 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_12_9_moment,
         ],
         labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
             r"WT $\mathrm{Re} = $5\times10^5$",
         ],
         colors=["blue", "red"],
@@ -936,7 +913,7 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_7_7_moment,
         ],
         labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
             r"WT $\mathrm{Re}e = 5\times10^5$",
         ],
         colors=["blue", "red"],
@@ -959,7 +936,7 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_12_9_moment,
         ],
         high_labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
             r"WT $\mathrm{Re} = 5\times10^5$",
         ],
         high_colors=["blue", "red"],
@@ -970,7 +947,7 @@ def plotting_polars_beta_moments(
             data_WT_beta_re_56e4_alpha_7_7_moment,
         ],
         low_labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$",
+            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
             r"WT $\mathrm{Re} = 5\times10^5$",
         ],
         low_colors=["blue", "red"],

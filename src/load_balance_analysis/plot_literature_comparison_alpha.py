@@ -39,7 +39,14 @@ def plotting_polars_alpha(
         / "CFD_polar_data"
         / "CFD_V3_CL_CD_RANS_Vire2020_Rey_50e4.csv"
     )
-    data_CFD_Vire2021_10e5 = pd.read_csv(
+    data_CFD_Vire2020_5e5_no_transition = pd.read_csv(
+        Path(project_dir)
+        / "data"
+        / "CFD_polar_data"
+        / "CFD_RANS_CL_CD_Vire2020__Rey_5e5_alpha_sweep_NoTransitionModel.csv"
+    )
+
+    data_CFD_Vire2022_10e5 = pd.read_csv(
         Path(project_dir)
         / "data"
         / "CFD_polar_data"
@@ -55,36 +62,47 @@ def plotting_polars_alpha(
     )
     data_windtunnel = pd.read_csv(path_to_csv)
 
-    # Data frames, labels, colors, and linestyles
+    # Data frames, labels, colors, linestyles, markers, markersize
     data_frame_list = [
-        data_CFD_Vire2021_10e5,
         data_CFD_Vire2020_5e5,
+        # data_CFD_Vire2020_5e5_no_transition,
+        data_CFD_Vire2022_10e5,
         data_VSM_alpha_re_56e4,
         data_windtunnel,
     ]
     labels = [
+        rf"CFD Re = $5\times10^5$ (no struts)",
+        # rf"CFD Re = $5\times10^5$ (no struts, no transition model)",
         rf"CFD Re = $10\times10^5$",
-        rf"CFD Re = $5\times10^5$",
-        rf"VSM Re = $5\times10^5$",
+        rf"VSM Re = $5\times10^5$ (no struts)",  # , no transition model)",
         rf"WT Re = $5\times10^5$",
         # rf"Polars Uri",
         # rf"CFD Re = $10\times10^5$ -1.02",
         # rf"CFD Re = $10\times10^5$ +1.02",
     ]
     colors = ["black", "black", "blue", "red", "green", "purple"]
-    linestyles = ["--", "-", "-", "-", "dashdot", "dashdot"]
+    linestyles = ["-", "--", "-", "dashdot", "dashdot"]
     markers = ["*", "*", ".", "o", "x", "x"]
-    fmt_wt = "o"
+    markersize = [7, 15, 7, 7, 7, 7, 7, 7]
+    markerfillstyle = ["", "none", "", "", "", "", ""]
 
     # Plot CL, CD, and CL/CD in subplots
-    fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+    fig, axs = plt.subplots(1, 3, figsize=(15, 5.5))
 
     aoa_col = f"aoa"
     cl_col = f"CL"
     cd_col = f"CD"
 
-    for i, (data_frame, label, color, linestyle, marker) in enumerate(
-        zip(data_frame_list, labels, colors, linestyles, markers)
+    for i, (data_frame, label, color, linestyle, marker, msize, mfill) in enumerate(
+        zip(
+            data_frame_list,
+            labels,
+            colors,
+            linestyles,
+            markers,
+            markersize,
+            markerfillstyle,
+        )
     ):
         plot_on_ax(
             axs[0],
@@ -95,29 +113,35 @@ def plotting_polars_alpha(
             linestyle=linestyle,
             marker=marker,
             is_with_grid=True,
+            # markersize=msize,
+            # markerfillstyle=mfill,
         )
         plot_on_ax(
             axs[1],
             data_frame[aoa_col],
             data_frame[cd_col],
-            label=label,
+            label=None,
             color=color,
             linestyle=linestyle,
             marker=marker,
             is_with_grid=True,
+            # markersize=msize,
+            # markerfillstyle=mfill,
         )
         plot_on_ax(
             axs[2],
             data_frame[aoa_col],
             data_frame[cl_col] / data_frame[cd_col],
-            label=label,
+            label=None,
             color=color,
             linestyle=linestyle,
             marker=marker,
             is_with_grid=True,
+            # markersize=msize,
+            # markerfillstyle=mfill,
         )
         # adding the confidence interval
-        if i == 3:
+        if "WT" in label:
             alpha = 0.2
             axs[0].fill_between(
                 data_frame[aoa_col],
@@ -133,7 +157,7 @@ def plotting_polars_alpha(
                 data_frame[cd_col] + data_frame["CD_ci"],
                 color=color,
                 alpha=alpha,
-                label=f"WT CI of {confidence_interval}\%",
+                label=None,
             )
             axs[2].fill_between(
                 data_frame[aoa_col],
@@ -143,7 +167,7 @@ def plotting_polars_alpha(
                 + data_frame["CL_ci"] / data_frame["CD_ci"],
                 color=color,
                 alpha=alpha,
-                label=f"WT CI of {confidence_interval}\%",
+                label=None,
             )
 
     axs[0].set_xlim(-12, 25)
@@ -157,15 +181,36 @@ def plotting_polars_alpha(
 
     axs[1].set_xlabel(x_axis_labels["alpha"])
     axs[1].set_ylabel(y_axis_labels["CD"])
-    axs[1].legend(loc="upper left")
     # axs[1].grid()
 
     axs[2].set_xlabel(x_axis_labels["alpha"])
     axs[2].set_ylabel(y_axis_labels["L/D"])
     # axs[2].grid()
 
+    # make labels unique
+    # unique_labels = []
+    # unique_handles = []
+    # seen_labels = set()
+    # handles = axs[0].get_legend_handles_labels()[0]
+
+    # for color, label in zip(colors, labels):
+    #     if label not in seen_labels:
+    #         unique_labels.append(label)
+    #         # unique_handles.append(Patch(color=color, label=label))
+    #         seen_labels.add(label)
+
+    # Add legend below the plot with no bounding box
+    fig.legend(
+        # handles=handles,
+        bbox_to_anchor=(0.5, 0.06),
+        loc="center",
+        ncol=3,
+        frameon=False,
+    )
+
     # Save the plot
     plt.tight_layout()
+    plt.subplots_adjust(bottom=0.22)  # Make room for legend below
     file_name = f"literature_polars_alpha"
     saving_pdf_and_pdf_tex(results_dir, file_name)
 
@@ -200,14 +245,14 @@ def plotting_polars_alpha(
 #     data_CFD_Vire2020_5e5 = pd.read_csv(
 #         Path(polar_dir) / "CFD_V3_CL_CD_RANS_Vire2020_Rey_50e4.csv"
 #     )
-#     data_CFD_Vire2021_10e5 = pd.read_csv(
+#     data_CFD_Vire2022_10e5 = pd.read_csv(
 #         Path(polar_dir) / "CFD_V3_CL_CD_RANS_Lebesque_2024_Rey_100e4.csv"
 #     )
 
 #     # Data frames, labels, colors, and linestyles
 #     data_frame_list = [
 #         data_CFD_Vire2020_5e5,
-#         data_CFD_Vire2021_10e5,
+#         data_CFD_Vire2022_10e5,
 #         data_VSM_alpha_re_56e4_breukels,
 #         data_VSM_alpha_re_56e4_breukels_stall,
 #         data_VSM_alpha_re_56e4_corrected,
@@ -215,7 +260,7 @@ def plotting_polars_alpha(
 #         data_windtunnel,
 #     ]
 #     labels = [
-#         rf"CFD Re = $5\times10^5$ (No struts)",
+#         rf"CFD Re = $5\times10^5$ (no struts)",
 #         rf"CFD Re = $10\times10^5$",
 #         rf"VSM Breukels Re = $5.6\times10^5$",
 #         rf"VSM Breukels Stall Re = $5.6\times10^5$",
@@ -537,7 +582,7 @@ def plotting_polars_alpha_moments(
         data_WT_alpha_moment,
     ]
     labels = [
-        r"VSM Re = $5\times10^5$",
+        r"VSM Re = $5\times10^5$ (no struts)",
         r"WT Re = $5\times10^5$",
     ]
     colors = ["blue", "red"]
@@ -649,11 +694,30 @@ def plotting_polars_alpha_moments(
     axs[1].set_ylabel(y_axis_labels["CMy"])
     axs[2].set_ylabel(y_axis_labels["CMz"])
 
-    # Legend on the second subplot (or whichever you prefer)
-    axs[2].legend(loc="upper left")
+    # Make labels unique
+    unique_labels = []
+    seen_labels = set()
+    handles, _ = axs[0].get_legend_handles_labels()
+
+    for handle, label in zip(handles, _):
+        if label not in seen_labels:
+            unique_labels.append((handle, label))
+            seen_labels.add(label)
+    # Add unique labels to the legend
+    fig.legend(
+        [handle for handle, _ in unique_labels],
+        [label for _, label in unique_labels],
+        bbox_to_anchor=(0.5, 0.02),
+        loc="center",
+        ncol=3,
+        frameon=False,
+    )
+    # # Add legend below the plot with no bounding box
+    # fig.legend(bbox_to_anchor=(0.5, 0.02), loc="center", ncol=2, frameon=False)
 
     # 6) Save the figure
     plt.tight_layout()
+    plt.subplots_adjust(bottom=0.15)  # Make room for legend below
     file_name = "moment_literature_polar_alphas"
     saving_pdf_and_pdf_tex(results_dir, file_name)
 

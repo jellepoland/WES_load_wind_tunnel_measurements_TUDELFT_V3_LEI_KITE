@@ -511,12 +511,6 @@ def create_grouped_plot(
     # Group data by Reynolds number
     reynolds_groups = {2.5: [], 3.8: [], 5.0: []}
 
-    # Add shaded regions first so they appear behind the data points
-    shaded_regions = [0, 2]  # Indices
-    for ax in axs:
-        for region_idx in shaded_regions:
-            ax.axvspan(region_idx - 0.5, region_idx + 0.5, color="gray", alpha=0.15)
-
     for rey, data, label in zip(rey_list, data_to_print, labels_to_print):
         # Determine which Reynolds number group this belongs to
         for key in reynolds_groups.keys():
@@ -584,13 +578,17 @@ def create_grouped_plot(
         ax.grid(True, axis="y")
         ax.grid(False, axis="x")
 
-        for ax in axs:
-            # Get current x-axis limits
-            xlim = ax.get_xlim()
+    # Add vertical separator lines after all data is plotted for all subplots
+    for ax in axs:
+        # Add vertical separator lines between groups (0.5 is between groups 0 and 1, 1.5 is between groups 1 and 2)
+        separator_positions = [0.5, 1.5]  # Lines between groups
+        for sep_pos in separator_positions:
+            ax.axvline(x=sep_pos, color="gray", linestyle="-", linewidth=1, alpha=0.5)
 
-            # Extend x-axis limits slightly on both sides
-            padding = 0.19  # Adjust this value to control the gray area size
-            ax.set_xlim(xlim[0] + padding, xlim[1] - padding)
+        # Set tighter x-axis limits to make bins appear equally spaced
+        ax.set_xlim(
+            -0.4, 2.4
+        )  # From -0.4 to 2.4 to give equal spacing around 3 groups (0, 1, 2)
 
     axs[0].set_ylim(0.65, 0.90)
     # Create legend elements - Changed order to "No zigzag" first, "With zigzag" second
@@ -650,6 +648,10 @@ def create_grouped_plot(
             linestyle="None",
         ),
     ]
+
+    # Remove x-tick marks but keep labels
+    for ax in axs:
+        ax.tick_params(axis="x", length=0)
 
     # Add centered legend below the plots
     fig.legend(
