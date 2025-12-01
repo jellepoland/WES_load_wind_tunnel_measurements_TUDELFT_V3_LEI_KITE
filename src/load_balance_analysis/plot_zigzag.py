@@ -377,8 +377,23 @@ def plot_zigzag(
     print(f'merged_df["vw"].unique(): {merged_df["vw_actual_rounded"].unique()}')
     print(f'merged df Rey: {merged_df["Rey_rounded"].unique()}')
 
+    def select_sideslip(dataframe: pd.DataFrame, target: float, tolerance: float = 5.0):
+        """Return rows whose sideslip is within tolerance of the target."""
+        if dataframe.empty:
+            return dataframe
+
+        mask = np.isclose(dataframe["sideslip"], target, atol=tolerance)
+        if mask.any():
+            return dataframe[mask]
+
+        # Fall back to the closest available sideslip angle so we don't return empty.
+        closest_value = dataframe.loc[
+            (dataframe["sideslip"] - target).abs().idxmin(), "sideslip"
+        ]
+        return dataframe[np.isclose(dataframe["sideslip"], closest_value)]
+
     # Defining coefficients
-    coefficients = ["C_L", "C_D", "C_pitch"]
+    coefficients = ["C_L", "C_D", "C_S"]
     yaxis_names = ["CL", "CD", "CS"]
 
     data_to_print = []
@@ -403,13 +418,13 @@ def plot_zigzag(
 
         # if vw == 15, extracting data for each sideslip
         if vw == 15:
-            data_zz_sideslip_min10 = data_zz[data_zz["sideslip"] == -10]
-            data_zz_sideslip_0 = data_zz[data_zz["sideslip"] == 0]
-            data_zz_sideslip_10 = data_zz[data_zz["sideslip"] == 10]
+            data_zz_sideslip_min10 = select_sideslip(data_zz, -10)
+            data_zz_sideslip_0 = select_sideslip(data_zz, 0)
+            data_zz_sideslip_10 = select_sideslip(data_zz, 10)
 
-            data_no_zz_sideslip_min10 = data_no_zz[data_no_zz["sideslip"] == -10]
-            data_no_zz_sideslip_0 = data_no_zz[data_no_zz["sideslip"] == 0]
-            data_no_zz_sideslip_10 = data_no_zz[data_no_zz["sideslip"] == 10]
+            data_no_zz_sideslip_min10 = select_sideslip(data_no_zz, -10)
+            data_no_zz_sideslip_0 = select_sideslip(data_no_zz, 0)
+            data_no_zz_sideslip_10 = select_sideslip(data_no_zz, 10)
 
             # Changed order here: "No zigzag" first, then "with zigzag"
             label_list = [
@@ -429,8 +444,8 @@ def plot_zigzag(
                 data_zz_sideslip_10,
             ]
         else:
-            data_zz_sideslip = data_zz[data_zz["sideslip"] == 0]
-            data_no_zz_sideslip = data_no_zz[data_no_zz["sideslip"] == 0]
+            data_zz_sideslip = select_sideslip(data_zz, 0)
+            data_no_zz_sideslip = select_sideslip(data_no_zz, 0)
 
             # Changed order here: "No zigzag" first, then "with zigzag"
             label_list = [

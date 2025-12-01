@@ -81,7 +81,7 @@ def plotting_polars_alpha(
         # rf"CFD Re = $10\times10^5$ +1.02",
     ]
     colors = ["black", "black", "blue", "red", "green", "purple"]
-    linestyles = ["-", "--", "-", "dashdot", "dashdot"]
+    linestyles = ["-", "--", "-", "-", "dashdot"]
     markers = ["*", "*", ".", "o", "x", "x"]
     markersize = [7, 15, 7, 7, 7, 7, 7, 7]
     markerfillstyle = ["", "none", "", "", "", "", ""]

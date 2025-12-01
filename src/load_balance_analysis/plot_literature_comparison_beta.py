@@ -463,9 +463,9 @@ def plot_double_row(
     # Apply global xlim/ylim if provided (assumed as a list of three values for columns)
     if "CL" in variables_to_plot:
         axs[0, 1].set_ylim(0.05, 0.25)
-        axs[0, 2].set_ylim(-0.20, 0.05)
+        axs[0, 2].set_ylim(-0.05, 0.2)  # -0.20, 0.05)
         # axs[1, 0].set_ylim(0.45, 0.8)
-        axs[1, 2].set_ylim(-0.25, 0.05)
+        axs[1, 2].set_ylim(-0.05, 0.25)  # -0.25, 0.05)
     elif "CMx" in variables_to_plot:
         axs[0, 0].set_ylim(-0.3, 0.1)
         # axs[0, 1].set_ylim(-0.3, 0.05)
@@ -882,28 +882,28 @@ def plotting_polars_beta_moments(
     #     # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
     # )
 
-    # 3. moment_literature_polars_beta_high_alpha
-    plot_single_row(
-        results_dir=results_dir,
-        data_frames=[
-            data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
-            data_WT_beta_re_56e4_alpha_12_9_moment,
-        ],
-        labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
-            r"WT $\mathrm{Re} = $5\times10^5$",
-        ],
-        colors=["blue", "red"],
-        linestyles=["-", "-"],
-        markers=[".", "o"],
-        file_name="moment_literature_polars_beta_high_alpha",
-        confidence_interval=confidence_interval,
-        axs_titles=["CMx (High Alpha) moment", "CMy (High Alpha)", "CMz (High Alpha)"],
-        legend_location_index=0,
-        legend_location="lower left",
-        variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
-        # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
-    )
+    # # 3. moment_literature_polars_beta_high_alpha
+    # plot_single_row(
+    #     results_dir=results_dir,
+    #     data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
+    #         data_WT_beta_re_56e4_alpha_12_9_moment,
+    #     ],
+    #     labels=[
+    #         r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
+    #         r"WT $\mathrm{Re} = $5\times10^5$",
+    #     ],
+    #     colors=["blue", "red"],
+    #     linestyles=["-", "-"],
+    #     markers=[".", "o"],
+    #     file_name="moment_literature_polars_beta_high_alpha",
+    #     confidence_interval=confidence_interval,
+    #     axs_titles=["CMx (High Alpha) moment", "CMy (High Alpha)", "CMz (High Alpha)"],
+    #     legend_location_index=0,
+    #     legend_location="lower left",
+    #     variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
+    #     # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
+    # )
 
     # 4. moment_literature_polars_beta_low_alpha
     plot_single_row(
@@ -928,34 +928,34 @@ def plotting_polars_beta_moments(
         # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
     )
 
-    ### 5. plotting double rows
-    plot_double_row(
-        results_dir,
-        high_data_frames=[
-            data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
-            data_WT_beta_re_56e4_alpha_12_9_moment,
-        ],
-        high_labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
-            r"WT $\mathrm{Re} = 5\times10^5$",
-        ],
-        high_colors=["blue", "red"],
-        high_linestyles=["-", "-"],
-        high_markers=[".", "o"],
-        low_data_frames=[
-            data_VSM_beta_re_56e4_alpha_675_corrected_moment,
-            data_WT_beta_re_56e4_alpha_7_7_moment,
-        ],
-        low_labels=[
-            r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
-            r"WT $\mathrm{Re} = 5\times10^5$",
-        ],
-        low_colors=["blue", "red"],
-        low_linestyles=["-", "-"],
-        low_markers=[".", "o"],
-        file_name="moment_literature_polars_beta_double_alpha",
-        confidence_interval=confidence_interval,
-        axs_titles_high=["CMx (High Alpha)", "CMy (High Alpha)", "CMz (High Alpha)"],
-        axs_titles_low=["CMx (Low Alpha)", "CMy (Low Alpha)", "CMz (Low Alpha)"],
-        variables_to_plot=["CMx", "CMy", "CMz"],
-    )
+    # ### 5. plotting double rows
+    # plot_double_row(
+    #     results_dir,
+    #     high_data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_1195_corrected_moment,
+    #         data_WT_beta_re_56e4_alpha_12_9_moment,
+    #     ],
+    #     high_labels=[
+    #         r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
+    #         r"WT $\mathrm{Re} = 5\times10^5$",
+    #     ],
+    #     high_colors=["blue", "red"],
+    #     high_linestyles=["-", "-"],
+    #     high_markers=[".", "o"],
+    #     low_data_frames=[
+    #         data_VSM_beta_re_56e4_alpha_675_corrected_moment,
+    #         data_WT_beta_re_56e4_alpha_7_7_moment,
+    #     ],
+    #     low_labels=[
+    #         r"VSM $\mathrm{Re} = 5\times10^5$ (no struts)",
+    #         r"WT $\mathrm{Re} = 5\times10^5$",
+    #     ],
+    #     low_colors=["blue", "red"],
+    #     low_linestyles=["-", "-"],
+    #     low_markers=[".", "o"],
+    #     file_name="moment_literature_polars_beta_double_alpha",
+    #     confidence_interval=confidence_interval,
+    #     axs_titles_high=["CMx (High Alpha)", "CMy (High Alpha)", "CMz (High Alpha)"],
+    #     axs_titles_low=["CMx (Low Alpha)", "CMy (Low Alpha)", "CMz (Low Alpha)"],
+    #     variables_to_plot=["CMx", "CMy", "CMz"],
+    # )

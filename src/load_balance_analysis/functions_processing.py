@@ -113,6 +113,8 @@ def translate_from_origin_to_cg(
     alpha_cg_delta_with_rod: float,
 ) -> pd.DataFrame:
 
+    ##TODO: pre 23-10-2025 ##
+
     ##TODO: update alpha_cg_comes_in_deg should be rad
     # alpha_cg = np.deg2rad(df["aoa"] - alpha_cg_delta_with_rod)
     # x_cg = l_cg * np.cos(alpha_cg)
@@ -222,6 +224,44 @@ def translate_from_origin_to_cg(
     df["M_Y"] = M_cg[:, 1]
     df["M_Z"] = M_cg[:, 2]
 
+    # ##TODO: post 23-10-2025
+    # # Convert hinge location from millimetres (lab reference) to metres (model reference)
+    # x_hinge_m = x_hinge / 1000.0
+    # z_hinge_m = z_hinge / 1000.0
+
+    # # Geometry parameters for the TU Delft tow-point rig
+    # alpha_rod_to_chordline = 6.3  # deg
+    # l_rod = 0.415  # m
+    # z_TE_fullscale = 11.004972573823276  # m
+    # x_TE_fullscale = 1.443146003226444  # m
+    # geom_scaling_factor = 6.5
+
+    # alpha_deg = df["aoa"] - alpha_rod_to_chordline
+    # x_alpha, z_alpha, _, _ = compute_tow_point(
+    #     alpha_deg,
+    #     alpha_rod_to_chordline=alpha_rod_to_chordline,
+    #     l_rod=l_rod,
+    #     x_hinge=x_hinge_m,
+    #     z_hinge=z_hinge_m,
+    #     z_TE_fullscale=z_TE_fullscale,
+    #     x_TE_fullscale=x_TE_fullscale,
+    #     geom_scaling_factor=geom_scaling_factor,
+    # )
+    # # the z-coordinate must be inverted because wind tunnel has z pointing downwards
+    # r = np.column_stack([x_alpha, np.zeros_like(x_alpha), -z_alpha])
+    # # defining the forces
+    # F_origin = df[["F_X", "F_Y", "F_Z"]].values  # shape (N, 3)
+    # M_origin = df[["M_X", "M_Y", "M_Z"]].values  # shape (N, 3)
+    # # computing moment
+    # M_tow_point = M_origin + np.cross(r, F_origin)
+    # # writing back to dataframe
+    # df["F_X"] = df["F_X"]
+    # df["F_Y"] = df["F_Y"]
+    # df["F_Z"] = df["F_Z"]
+    # df["M_X"] = M_tow_point[:, 0]
+    # df["M_Y"] = M_tow_point[:, 1]
+    # df["M_Z"] = M_tow_point[:, 2]
+
     return df
 
 
@@ -250,10 +290,6 @@ def correcting_for_sideslip(df: pd.DataFrame) -> pd.DataFrame:
     Suppose the turntable measured beta positive clockwise,
     but we want it positive counterclockwise in our final x,y,z frame.
     """
-    # Flip the sign so beta is now +10° => -10° for the code
-    ##TODO: interesting sign flip
-    df["sideslip"] = df["sideslip"]
-
     # Convert to radians
     beta = np.deg2rad(df["sideslip"])
 
@@ -355,77 +391,53 @@ def substract_support_structure_aero_coefficients(
     # Retrieve the angle of attack for the kite
     aoa_kite = df["aoa_kite"].unique()[0]
 
+    if supp_coeffs.empty:
+        raise ValueError(
+            f"No support structure aerodynamic coefficients available for vw={cur_vw}."
+        )
+
+    tol_sideslip = 0.51  # tolerate small offsets introduced during zigzag corrections
+
     for k in df["sideslip"].unique():
         # Select support structure aero coefficients for this sideslip
-        c_s = supp_coeffs[supp_coeffs["sideslip"] == k]
+        mask = np.isclose(supp_coeffs["sideslip"], k, atol=tol_sideslip)
+        c_s = supp_coeffs[mask]
 
-        # For each aerodynamic channel (forces and moments), get the interpolation coefficients (m1, c1, m2, c2)
-        F_x = c_s.loc[c_s["channel"] == "C_D", ["m1", "c1", "m2", "c2"]]
-        F_y = c_s.loc[c_s["channel"] == "C_S", ["m1", "c1", "m2", "c2"]]
-        F_z = c_s.loc[c_s["channel"] == "C_L", ["m1", "c1", "m2", "c2"]]
-        M_x = c_s.loc[c_s["channel"] == "C_roll", ["m1", "c1", "m2", "c2"]]
-        M_y = c_s.loc[c_s["channel"] == "C_pitch", ["m1", "c1", "m2", "c2"]]
-        M_z = c_s.loc[c_s["channel"] == "C_yaw", ["m1", "c1", "m2", "c2"]]
+        if c_s.empty:
+            nearest_idx = (supp_coeffs["sideslip"] - k).abs().idxmin()
+            nearest_sideslip = supp_coeffs.loc[nearest_idx, "sideslip"]
+            print(
+                f"Warning: sideslip {k:.2f} missing in support coefficients; "
+                f"using nearest sideslip {nearest_sideslip:.2f}."
+            )
+            c_s = supp_coeffs[supp_coeffs["sideslip"] == nearest_sideslip]
 
-        # Define a function to compute the interpolated value based on the angle of attack
-        def interpolate_value(aoa, m1, c1, m2, c2, middle_alpha):
-            if aoa <= middle_alpha:
-                return m1 * aoa + c1  # Left segment
-            else:
-                return m2 * aoa + c2  # Right segment
+        required_channels = {"C_D", "C_S", "C_L", "C_roll", "C_pitch", "C_yaw"}
+        missing_channels = required_channels.difference(set(c_s["channel"]))
+        if missing_channels:
+            raise ValueError(
+                f"Support structure coefficients missing channels {sorted(missing_channels)} "
+                f"for vw={cur_vw}, sideslip≈{k:.2f}."
+            )
 
-        # Compute the middle alpha (mean value of the alpha range) to determine the split point
-        middle_alpha = support_struc_aero_interp_coeffs["middle_alpha"].mean()
+        def evaluate_channel(channel_name: str) -> float:
+            row = c_s[c_s["channel"] == channel_name]
+            if row.empty:
+                raise ValueError(
+                    f"Support structure coefficients missing channel {channel_name} "
+                    f"for vw={cur_vw}, sideslip≈{k:.2f}."
+                )
+            row = row.iloc[0]
+            degree = int(row.get("degree", 0))
+            coeffs = [float(row.get(f"coef_{i}", 0.0)) for i in range(degree + 1)]
+            return np.polyval(coeffs[::-1], aoa_kite)
 
-        # Compute support structure aero coefficients for this wind speed, sideslip, and angle of attack combination
-        C_Fx_s = interpolate_value(
-            aoa_kite,
-            F_x["m1"].values[0],
-            F_x["c1"].values[0],
-            F_x["m2"].values[0],
-            F_x["c2"].values[0],
-            middle_alpha,
-        )
-        C_Fy_s = interpolate_value(
-            aoa_kite,
-            F_y["m1"].values[0],
-            F_y["c1"].values[0],
-            F_y["m2"].values[0],
-            F_y["c2"].values[0],
-            middle_alpha,
-        )
-        C_Fz_s = interpolate_value(
-            aoa_kite,
-            F_z["m1"].values[0],
-            F_z["c1"].values[0],
-            F_z["m2"].values[0],
-            F_z["c2"].values[0],
-            middle_alpha,
-        )
-        C_Mx_s = interpolate_value(
-            aoa_kite,
-            M_x["m1"].values[0],
-            M_x["c1"].values[0],
-            M_x["m2"].values[0],
-            M_x["c2"].values[0],
-            middle_alpha,
-        )
-        C_My_s = interpolate_value(
-            aoa_kite,
-            M_y["m1"].values[0],
-            M_y["c1"].values[0],
-            M_y["m2"].values[0],
-            M_y["c2"].values[0],
-            middle_alpha,
-        )
-        C_Mz_s = interpolate_value(
-            aoa_kite,
-            M_z["m1"].values[0],
-            M_z["c1"].values[0],
-            M_z["m2"].values[0],
-            M_z["c2"].values[0],
-            middle_alpha,
-        )
+        C_Fx_s = evaluate_channel("C_D")
+        C_Fy_s = evaluate_channel("C_S")
+        C_Fz_s = evaluate_channel("C_L")
+        C_Mx_s = evaluate_channel("C_roll")
+        C_My_s = evaluate_channel("C_pitch")
+        C_Mz_s = evaluate_channel("C_yaw")
 
         # Subtract support structure aero coefficients from the main dataframe for this wind speed, sideslip, and aoa combination
         df.loc[df["sideslip"] == k, "C_D"] -= C_Fx_s
@@ -584,6 +596,30 @@ def computing_kite_cg(x_hinge, z_hinge, l_cg, alpha_cg_delta_with_rod):
     breakpoint()
 
 
+def compute_tow_point(
+    alpha_deg,
+    alpha_rod_to_chordline=6.3,  # deg
+    l_rod=0.415,
+    x_hinge: float = 0.434,
+    z_hinge: float = 1.3535,
+    z_TE_fullscale=11.004972573823276,
+    x_TE_fullscale=1.443146003226444,
+    geom_scaling_factor=6.5,
+):
+
+    delta_x_tow_point = x_TE_fullscale / geom_scaling_factor + l_rod * np.cos(
+        np.deg2rad(alpha_rod_to_chordline)
+    )
+    delta_z_tow_point = z_TE_fullscale / geom_scaling_factor
+    phi_0 = np.arctan(delta_z_tow_point / delta_x_tow_point)
+    r_tow_to_hinge = np.sqrt(delta_x_tow_point**2 + delta_z_tow_point**2)
+
+    x_alpha = -r_tow_to_hinge * np.cos(phi_0 - np.deg2rad(alpha_deg)) - x_hinge
+    z_alpha = -r_tow_to_hinge * np.sin(phi_0 - np.deg2rad(alpha_deg)) + z_hinge
+
+    return x_alpha, z_alpha, delta_x_tow_point, delta_z_tow_point
+
+
 def apply_wind_tunnel_corrections(df: pd.DataFrame) -> pd.DataFrame:
     """
     Apply wind-tunnel corrections to the aerodynamic coefficients and angles.
@@ -648,8 +684,44 @@ def processing_raw_lvm_data_into_csv(
     C_suth: float = 110.4,
     delta_aoa_rod_to_alpha: float = 6.3,
 ):
-    ##TODO: toggle this on/off
-    # computing_kite_cg(x_hinge, z_hinge, l_cg, alpha_cg_delta_with_rod)
+    # TODO: toggle this on/off
+    ### computing_kite_cg(x_hinge, z_hinge, l_cg, alpha_cg_delta_with_rod)
+    # alpha_rod_to_chordline = 6.3  # deg
+    # l_rod = 0.415
+    # x_hinge = 0.434
+    # z_hinge = 1.3535
+    # z_TE_fullscale = 11.004972573823276
+    # x_TE_fullscale = 1.443146003226444
+    # geom_scaling_factor = 6.5
+    # x_alpha_0, z_alpha_0, _, _ = compute_tow_point(alpha=0)
+    # x_alpha_10, z_alpha_10, delta_x_tow_point, delta_z_tow_point = compute_tow_point(
+    #     alpha=10
+    # )
+
+    # from matplotlib import pyplot as plt
+
+    # plt.figure()
+    # plt.plot(0, 0, "ro", label="origin")
+    # plt.plot(-x_hinge, z_hinge, "go", label="hinge point")
+    # plt.plot(
+    #     -delta_x_tow_point - x_hinge,
+    #     -delta_z_tow_point + z_hinge,
+    #     "x",
+    #     label="tow point initial",
+    # )
+    # plt.plot(
+    #     -(x_TE_fullscale / geom_scaling_factor) - x_hinge,
+    #     0 + z_hinge,
+    #     "x",
+    #     label="TE full-scale",
+    # )
+    # plt.plot(x_alpha_0, z_alpha_0, "bo", label="tow point at 0 deg aoa")
+    # plt.plot(x_alpha_10, z_alpha_10, "co", label="tow point at 10 deg aoa")
+    # plt.legend()
+    # plt.axis("equal")
+    # plt.grid()
+    # plt.show()
+    # breakpoint()
 
     if is_kite:
         print(f"PROCESSING KITE, substracting support-structure")

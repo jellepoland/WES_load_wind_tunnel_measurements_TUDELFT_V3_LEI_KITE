@@ -107,9 +107,9 @@ def running_vsm_to_generate_csv_data(
     vsm_input_path = Path(project_dir) / "data" / "vsm_input"
     geom_scaled_path = Path(vsm_input_path) / "wing_geometry_scaled.yaml"
     body_aero = BodyAerodynamics.instantiate(
-        n_panels=50,
+        n_panels=n_panels,
         file_path=geom_scaled_path,
-        spanwise_panel_distribution="uniform",
+        spanwise_panel_distribution=spanwise_panel_distribution,
     )
     solver = Solver(reference_point=reference_point)
 
@@ -203,7 +203,8 @@ def main():
     # )
     # # breakpoint()
 
-    ## Reference Point
+    # TODO: pre 23-10-2025, using cg
+    # Reference Point
     te_point_full_size_CAD = np.array(
         [1.443146003226444, 8.28776104036884e-10, 3.754972573823276]
     )
@@ -217,9 +218,13 @@ def main():
     print(f"reference_point: {reference_point}")
     # breakpoint()
 
+    ##TODO: post 23-10-2025, using tow-point
+    # geom_scaling = 6.5
+    # reference_point = np.array([0, 0, -7.5]) / geom_scaling  # tow-point
+
     ## Settings
     vw = 18.5  # 2.82
-    n_panels = 200
+    n_panels = 150
     spanwise_panel_distribution = "uniform"
 
     running_vsm_to_generate_csv_data(

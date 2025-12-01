@@ -283,8 +283,10 @@ def interpolation(processed_df: pd.DataFrame, save_path: Path) -> None:
         return m, c
 
     # Create empty dataframe for interpolation coefficients
+    max_degree = 3  # maximum polynomial degree we will store (0..3)
+    coef_columns = [f"coef_{i}" for i in range(max_degree + 1)]
     c_interp = pd.DataFrame(
-        columns=["channel", "m1", "c1", "m2", "c2", "sideslip", "vw", "middle_alpha"]
+        columns=["channel", "degree", *coef_columns, "sideslip", "vw"]
     )
     row = 0
 
@@ -305,45 +307,27 @@ def interpolation(processed_df: pd.DataFrame, save_path: Path) -> None:
                 x_val = current_data["aoa"].values
                 y_val = current_data[channel].values
 
-                try:
-                    # Split data around the middle point
-                    middle_idx = len(x_val) // 2
-                    x_left, y_left = x_val[: middle_idx + 1], y_val[: middle_idx + 1]
-                    x_right, y_right = x_val[middle_idx:], y_val[middle_idx:]
-
-                    # Fit two lines: one for the left segment and one for the right segment
-                    m1, c1 = linear_fit(x_left, y_left)
-                    m2, c2 = linear_fit(x_right, y_right)
-
-                    # Ensure continuity at the middle point
-                    middle_x = x_val[middle_idx]
-                    middle_y = y_val[middle_idx]
-
-                    # Adjust intercepts to ensure both lines pass through the middle point
-                    c1 = middle_y - m1 * middle_x
-                    c2 = middle_y - m2 * middle_x
-
-                    # Define middle alpha value
-                    alpha_values = sorted(current_data["aoa"].unique())
-                    middle_alpha = alpha_values[len(alpha_values) // 2]
-
-                    # Append to dataframe
-                    c_interp.loc[row] = [
-                        channel,
-                        m1,
-                        c1,
-                        m2,
-                        c2,
-                        beta,
-                        vw,
-                        middle_alpha,
-                    ]
-                    row += 1
-                except np.linalg.LinAlgError:
+                degree = min(2, len(x_val) - 1)
+                if degree < 1:
                     print(
-                        f"Warning: Could not compute interpolation for beta={beta}, vw={vw}, channel={channel}"
+                        f"Warning: Insufficient data spread for beta={beta}, vw={vw}, channel={channel}"
                     )
                     continue
+
+                coeffs_desc = np.polyfit(x_val, y_val, degree)
+                coeffs_asc = coeffs_desc[::-1]  # constant first
+                stored_coeffs = [0.0] * (max_degree + 1)
+                for idx, coef in enumerate(coeffs_asc):
+                    stored_coeffs[idx] = coef
+
+                c_interp.loc[row] = [
+                    channel,
+                    degree,
+                    *stored_coeffs,
+                    beta,
+                    vw,
+                ]
+                row += 1
 
     # Save interpolation coefficients
     c_interp.to_csv(save_path, index=False)
@@ -437,28 +421,22 @@ def plot_interpolation_fit(
                 continue
 
             coeffs = df_interpolation[coeff_mask].iloc[0]
+            degree = int(coeffs["degree"])
+            coef_vals = [
+                float(coeffs[f"coef_{i}"]) for i in range(degree + 1)
+            ]
+            y_smooth = np.polyval(coef_vals[::-1], alpha_smooth)
 
-            # Split alpha values for two linear segments
-            middle_alpha = alpha_values[len(alpha_values) // 2]
-            alpha_left = alpha_smooth[alpha_smooth <= middle_alpha]
-            alpha_right = alpha_smooth[alpha_smooth > middle_alpha]
-
-            # Calculate interpolated values for left and right segments
-            y_left = coeffs["m1"] * alpha_left + coeffs["c1"]
-            y_right = coeffs["m2"] * alpha_right + coeffs["c2"]
-
-            # Plot the two segments
-            line_left = ax.plot(alpha_left, y_left, "--", color=vw_colors[vw])
-            line_right = ax.plot(alpha_right, y_right, "--", color=vw_colors[vw])
+            # Plot the polynomial fit
+            line = ax.plot(alpha_smooth, y_smooth, "--", color=vw_colors[vw])
 
             # Store legend handles and labels only from the first subplot
             if idx == 0:
-                legend_handles.extend([scatter, line_left[0], line_right[0]])
+                legend_handles.extend([scatter, line[0]])
                 legend_labels.extend(
                     [
                         f"Raw Data (vw={vw})",
-                        f"Interpolation Left (vw={vw})",
-                        f"Interpolation Right (vw={vw})",
+                        f"Polynomial Fit (vw={vw})",
                     ]
                 )
 

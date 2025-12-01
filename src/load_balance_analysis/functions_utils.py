@@ -63,14 +63,14 @@ x_axis_labels = {
 #     "kcrit": r"$k_{\text{crit}}$ (mm)",
 # }
 y_axis_labels = {
-    "CL": r"$C_{\textrm{L}}$ (-)",
-    "CD": r"$C_{\textrm{D}}$ (-)",
-    "CS": r"$C_{\textrm{S}}$ (-)",
-    "CMx": r"$C_{\textrm{M},\textrm{x}}$ (-)",
-    "CMy": r"$C_{\textrm{M},\textrm{y}}$ (-)",
-    "CMz": r"$C_{\textrm{M},\textrm{z}}$ (-)",
-    "L/D": r"$C_{\textrm{L}}/C_{\textrm{D}}$ (-)",
-    "kcrit": r"$k_{\textrm{crit}}$ (mm)",
+    "CL": r"$C_{\mathrm{L}}$ (-)",
+    "CD": r"$C_{\mathrm{D}}$ (-)",
+    "CS": r"$C_{\mathrm{S}}$ (-)",
+    "CMx": r"$C_{\mathrm{M},\mathrm{x}}$ (-)",
+    "CMy": r"$C_{\mathrm{M},\mathrm{y}}$ (-)",
+    "CMz": r"$C_{\mathrm{M},\mathrm{z}}$ (-)",
+    "L/D": r"$C_{\mathrm{L}}/C_{\mathrm{D}}$ (-)",
+    "kcrit": r"$k_{\mathrm{crit}}$ (mm)",
 }
 
 project_dir = Path(__file__).resolve().parent.parent.parent

@@ -253,8 +253,6 @@ def reading_all_folders(
             df_filename = df_folder[df_folder["Filename"] == filename]
             output_path = output_folder_dir / f"raw_{filename}.csv"
 
-            # TODO: Changing all the sideslip values from sign
-            # df_filename["sideslip"] = -df_filename["sideslip"]
             df_filename.to_csv(output_path, index=False)
 
 
