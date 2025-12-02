@@ -291,7 +291,8 @@ def correcting_for_sideslip(df: pd.DataFrame) -> pd.DataFrame:
     but we want it positive counterclockwise in our final x,y,z frame.
     """
     # Convert to radians
-    beta = np.deg2rad(df["sideslip"])
+    ##TODO: added the - on 02/12/2025, I think this is correct now. It was needed to get the C_D in check.
+    beta = -np.deg2rad(df["sideslip"])
 
     # Create the rotation matrix
     def create_rotation_matrix(beta_angle):

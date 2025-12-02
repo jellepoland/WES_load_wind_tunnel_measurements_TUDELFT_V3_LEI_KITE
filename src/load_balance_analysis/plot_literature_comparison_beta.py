@@ -162,9 +162,9 @@ def plot_single_row(
 
     # Example special Y-limits if "CFD" in the first label
     if len(labels) > 0 and "CFD" in labels[0]:
-        axs[2].set_ylim(-0.4, 0.05)
+        axs[2].set_ylim(-0.05, 0.3)
     elif "CS" in variables_to_plot:
-        axs[2].set_ylim(-0.5, 0.05)
+        axs[2].set_ylim(-0.05, 0.5)
 
     if xlim is not None:
         axs[0].set_xlim(xlim[0])
