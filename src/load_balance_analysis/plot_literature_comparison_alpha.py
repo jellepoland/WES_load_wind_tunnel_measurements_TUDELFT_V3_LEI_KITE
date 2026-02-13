@@ -213,6 +213,9 @@ def plotting_polars_alpha(
     plt.subplots_adjust(bottom=0.22)  # Make room for legend below
     file_name = f"literature_polars_alpha"
     saving_pdf_and_pdf_tex(results_dir, file_name)
+    results_dir = Path(project_dir) / "figures_final_submission_new"
+    file_name = f"fig10"
+    saving_pdf_and_pdf_tex(results_dir, file_name)
 
 
 # def plotting_polars_alpha_correction_comparison(
@@ -719,6 +722,10 @@ def plotting_polars_alpha_moments(
     plt.tight_layout()
     plt.subplots_adjust(bottom=0.15)  # Make room for legend below
     file_name = "moment_literature_polar_alphas"
+    saving_pdf_and_pdf_tex(results_dir, file_name)
+
+    results_dir = Path(project_dir) / "figures_final_submission_new"
+    file_name = f"fig12"
     saving_pdf_and_pdf_tex(results_dir, file_name)
 
     # Optionally, display the plot

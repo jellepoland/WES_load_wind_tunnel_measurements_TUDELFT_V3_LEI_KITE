@@ -32,7 +32,7 @@ from load_balance_analysis.functions_statistics import (
 
 def saving_pdf_and_pdf_tex(results_dir: str, filename: str):
     plt.savefig(Path(results_dir) / f"{filename}.pdf")
-    plt.close()
+    # plt.close()
 
 
 x_axis_labels = {
@@ -66,9 +66,9 @@ y_axis_labels = {
     "CL": r"$C_{\mathrm{L}}$ (-)",
     "CD": r"$C_{\mathrm{D}}$ (-)",
     "CS": r"$C_{\mathrm{S}}$ (-)",
-    "CMx": r"$C_{\mathrm{M},\mathrm{x}}$ (-)",
-    "CMy": r"$C_{\mathrm{M},\mathrm{y}}$ (-)",
-    "CMz": r"$C_{\mathrm{M},\mathrm{z}}$ (-)",
+    "CMx": r"$C_{\mathrm{M},x}$ (-)",
+    "CMy": r"$C_{\mathrm{M},y}$ (-)",
+    "CMz": r"$C_{\mathrm{M},z}$ (-)",
     "L/D": r"$C_{\mathrm{L}}/C_{\mathrm{D}}$ (-)",
     "kcrit": r"$k_{\mathrm{crit}}$ (mm)",
 }

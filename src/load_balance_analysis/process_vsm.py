@@ -20,7 +20,7 @@ def save_polar_data(
     body_aero,
     solver,
     solver_stall=None,
-    vw=1.05,
+    vw=None,
 ):
     polar_data, reynolds_number = generate_3D_polar_data(
         solver=solver,
@@ -106,6 +106,8 @@ def running_vsm_to_generate_csv_data(
     ### create body_aero
     vsm_input_path = Path(project_dir) / "data" / "vsm_input"
     geom_scaled_path = Path(vsm_input_path) / "wing_geometry_scaled.yaml"
+    geom_scaled_path = Path(vsm_input_path) / "aero_geometry.yaml"
+    print(f"\n ===== \n using: {geom_scaled_path} \n ===== \n")
     body_aero = BodyAerodynamics.instantiate(
         n_panels=n_panels,
         file_path=geom_scaled_path,
@@ -208,9 +210,13 @@ def main():
     te_point_full_size_CAD = np.array(
         [1.443146003226444, 8.28776104036884e-10, 3.754972573823276]
     )
-    geom_scaling = 6.5
-    x_displacement_from_te = -0.157
-    z_displacement_from_te = -0.252
+    geom_scaling = 1.0  # TODO: 13/02/2026 changed this to no scaling
+    x_displacement_from_te = (
+        -0.157 * 6.5 / geom_scaling
+    )  # -0.172 # TODO: 13/02/2026 changed this to no scaling
+    z_displacement_from_te = (
+        -0.252 * 6.5 / geom_scaling
+    )  # TODO: 13/02/2026 changed this to no scaling
     ref_point_from_te_edge = np.array(
         [x_displacement_from_te, 0, z_displacement_from_te]
     )
@@ -224,6 +230,7 @@ def main():
 
     ## Settings
     vw = 18.5  # 2.82
+    vw = 2.82
     n_panels = 150
     spanwise_panel_distribution = "uniform"
 

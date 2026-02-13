@@ -34,6 +34,8 @@ def plot_single_row(
     show_ci=True,  # <--- NEW: toggle confidence intervals
     xlim=None,
     ylim=None,
+    results_dir_2=None,
+    file_name_2=None,
 ):
     fig, axs = plt.subplots(1, 3, figsize=(15, 5))  # Three subplots in one row
 
@@ -162,7 +164,7 @@ def plot_single_row(
 
     # Example special Y-limits if "CFD" in the first label
     if len(labels) > 0 and "CFD" in labels[0]:
-        axs[2].set_ylim(-0.05, 0.3)
+        axs[2].set_ylim(-0.05, 0.15)
     elif "CS" in variables_to_plot:
         axs[2].set_ylim(-0.05, 0.5)
 
@@ -232,6 +234,9 @@ def plot_single_row(
 
     # Finally save
     saving_pdf_and_pdf_tex(results_dir, file_name)
+
+    if results_dir_2 is not None and file_name_2 is not None:
+        saving_pdf_and_pdf_tex(results_dir_2, file_name_2)
 
 
 def plot_double_row(
@@ -636,6 +641,8 @@ def plotting_polars_beta(
         axs_titles=["CL (High Alpha)", "CD (High Alpha)", "CS (High Alpha)"],
         legend_location_index=0,
         legend_location="lower left",
+        results_dir_2=Path(project_dir) / "figures_final_submission_new",
+        file_name_2=f"fig11",
     )
     ### 2. literature_polars_beta_low_alpha
     plot_single_row(
@@ -925,7 +932,9 @@ def plotting_polars_beta_moments(
         legend_location_index=0,
         legend_location="lower left",
         variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
-        # ylim=[[-0.2, 0.5], [-0.2, 0.5], [-0.3, 0.6]],
+        ylim=[[-0.1, 0.3], [-0.1, 0.2], [-0.25, 0.05]],
+        results_dir_2=Path(project_dir) / "figures_final_submission_new",
+        file_name_2=f"fig13",
     )
 
     # ### 5. plotting double rows
