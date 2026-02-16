@@ -71,75 +71,102 @@ def save_polar_data(
     ).to_csv(path_to_csv, index=False)
 
 
-def running_vsm_to_generate_csv_data(
-    project_dir: str,
-    vw: float,
-    geom_scaling,
-    is_with_corrected_polar,
-    reference_point,
-    n_panels,
-    spanwise_panel_distribution,
-) -> None:
-    if is_with_corrected_polar:
-        print("Running VSM with corrected polar")
-        name_appendix = "_corrected"
-    else:
-        print("Running VSM with breukels polar")
-        name_appendix = "_breukels"
+def main():
 
-    # vsm_input_path = Path(project_dir) / "data" / "vsm_input"
+    # breakpoint()
 
-    # ## scaling down geometry
-    # geom_path = Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid.csv"
-    # geom_scaled_path = (
-    #     Path(vsm_input_path) / "wing_geometry_from_CAD_orderded_tip_to_mid_scaled.csv"
+    te_point_full = np.array([1.443146003226444, 0, 3.754972573823276])
+    x_displacement_from_te_full = -0.157 * 6.5
+    z_displacement_from_te_full = -0.252 * 6.5
+
+    ### FULL
+    geom_scaling = 1.0
+    x_displacement_from_te = x_displacement_from_te_full / geom_scaling
+    z_displacement_from_te = z_displacement_from_te_full / geom_scaling
+    ref_point_from_te_edge = np.array(
+        [x_displacement_from_te, 0, z_displacement_from_te]
+    )
+    reference_point = te_point_full / geom_scaling + ref_point_from_te_edge
+    print(f"FULL reference_point: {reference_point}")
+
+    # ### SCALED
+    # geom_scaling = 6.5
+    # x_displacement_from_te = x_displacement_from_te_full / geom_scaling
+    # z_displacement_from_te = z_displacement_from_te_full / geom_scaling
+    # ref_point_from_te_edge = np.array(
+    #     [x_displacement_from_te, 0, z_displacement_from_te]
     # )
-    # df = pd.read_csv(geom_path, delimiter=",")  # , skiprows=1)
-    # df["LE_x"] = df["LE_x"].values / geom_scaling
-    # df["LE_y"] = df["LE_y"].values / geom_scaling
-    # df["LE_z"] = df["LE_z"].values / geom_scaling
-    # df["TE_x"] = df["TE_x"].values / geom_scaling
-    # df["TE_y"] = df["TE_y"].values / geom_scaling
-    # df["TE_z"] = df["TE_z"].values / geom_scaling
-    # df.to_csv(geom_scaled_path, index=False)
+    # reference_point = te_point_full / geom_scaling + ref_point_from_te_edge
+    # print(f"SCALED reference_point: {reference_point}")
+
+    # # TODO: pre 23-10-2025, using cg
+    # # Reference Point
+    # te_point_full_size_CAD = np.array([1.443146003226444, 0, 3.754972573823276])
+    # te_point_full_size_CAD[2] += 7.25
+    # geom_scaling = 1.0  # TODO: 13/02/2026 changed this to no scaling
+    # x_displacement_from_te = (
+    #     -0.157 * 6.5 / geom_scaling
+    # )  # -0.172 # TODO: 13/02/2026 changed this to no scaling
+    # z_displacement_from_te = (
+    #     -0.252 * 6.5 / geom_scaling
+    # )  # TODO: 13/02/2026 changed this to no scaling
+    # ref_point_from_te_edge = np.array(
+    #     [x_displacement_from_te, 0, z_displacement_from_te]
+    # )
+    # reference_point = te_point_full_size_CAD / geom_scaling + ref_point_from_te_edge
+    # print(f"FULL reference_point: {reference_point}")
+
+    # ### SCALED
+    # te_point_full_size_CAD = np.array([1.443146003226444, 0, 3.754972573823276])
+    # geom_scaling = 6.5
+    # x_displacement_from_te = -0.157
+    # z_displacement_from_te = -0.252
+    # ref_point_from_te_edge = np.array(
+    #     [x_displacement_from_te, 0, z_displacement_from_te]
+    # )
+    # reference_point = te_point_full_size_CAD / geom_scaling + ref_point_from_te_edge
+    # print(f"SCALED reference_point: {reference_point}")
+
+    # breakpoint()
+    # TODO: corrected the ref point
+    # 16/02/2026
+    # te_ref_point_full_new = np.array([1.443146003226444, 0.0, 11.004972573823276])
+    # reference_point = te_ref_point_full_new + ref_point_from_te_edge
+
+    ## Settings
+    vw_scaled = 18.52
+    vw_full = 2.82
+    vw = vw_full
+    n_panels = 150
+    spanwise_panel_distribution = "uniform"
 
     ### create body_aero
-    vsm_input_path = Path(project_dir) / "data" / "vsm_input"
-    geom_scaled_path = Path(vsm_input_path) / "wing_geometry_scaled.yaml"
-    geom_scaled_path = Path(vsm_input_path) / "aero_geometry.yaml"
-    print(f"\n ===== \n using: {geom_scaled_path} \n ===== \n")
+    geom_scaled_path_scaled = (
+        Path(project_dir) / "data" / "vsm_input" / "wing_geometry_scaled.yaml"
+    )
+    geom_scaled_path_full = (
+        Path(project_dir)
+        / "data"
+        / "vsm_input"
+        / "2D_airfoils_polars_plots_BEST"
+        / "aero_geometry_CFD_CAD_derived_z_min7_25.yaml"
+    )
     body_aero = BodyAerodynamics.instantiate(
         n_panels=n_panels,
-        file_path=geom_scaled_path,
+        file_path=geom_scaled_path_full,
         spanwise_panel_distribution=spanwise_panel_distribution,
     )
     solver = Solver(reference_point=reference_point)
 
-    ### Plotting reference point at mid-span plane
-    # plt.figure()
-    # df_row_18 = df.iloc[18]
-    # LE = df_row_18[["LE_x", "LE_y", "LE_z"]].values
-    # TE = df_row_18[["TE_x", "TE_y", "TE_z"]].values
-    # plt.plot(LE[0], LE[2], "ro", label="LE")
-    # plt.plot(TE[0], TE[2], "bo", label="TE")
-    # plt.plot((TE[0] - 0.395), TE[2], "bx", label="LE (approximate)")
-    # plt.plot(reference_point[0], reference_point[2], "go", label="Reference point")
-    # plt.legend()
-    # plt.axis("equal")
-    # plt.grid()
-    # plt.show()
-    # plt.close()
-
-    # ### INTERACTIVE PLOT
-    # interactive_plot(
-    #     body_aero,
-    #     vel=3.15,
-    #     angle_of_attack=6.75,
-    #     side_slip=0,
-    #     yaw_rate=0,
-    #     is_with_aerodynamic_details=True,
-    # )
-    # breakpoint()
+    # Computing the Reynolds number
+    rho = 1.16  # kg/m^3
+    mu = 1.68e-5  # kg/(m*s) #for 28.7deg
+    ref_length = (
+        2.59 / geom_scaling
+    )  # m, using the chord length at the reference point as the reference length for Reynolds number calculation
+    kinematic_viscosity = mu / rho
+    reynolds_number = (vw * ref_length) / kinematic_viscosity
+    print(f"\nReynolds number: {reynolds_number/1e5:.3f}e5\n")
 
     ### alpha sweeps
     alphas_to_be_plotted = np.linspace(-12, 25, 38)
@@ -147,19 +174,19 @@ def running_vsm_to_generate_csv_data(
         angle_range=alphas_to_be_plotted,
         angle_type="angle_of_attack",
         angle_of_attack=0,
-        name_appendix=name_appendix,
+        name_appendix="_corrected",
         body_aero=body_aero,
         solver=solver,
         solver_stall=None,
         vw=vw,
     )
     ### beta sweeps
-    betas_to_be_plotted = np.linspace(0, 20, 20)
+    betas_to_be_plotted = np.linspace(0, 20, 21)
     save_polar_data(
         angle_range=betas_to_be_plotted,
         angle_type="side_slip",
         angle_of_attack=7.4,
-        name_appendix=name_appendix,
+        name_appendix="_corrected",
         body_aero=body_aero,
         solver=solver,
         solver_stall=None,
@@ -169,107 +196,13 @@ def running_vsm_to_generate_csv_data(
         angle_range=betas_to_be_plotted,
         angle_type="side_slip",
         angle_of_attack=12.5,
-        name_appendix=name_appendix,
+        name_appendix="_corrected",
         body_aero=body_aero,
         solver=solver,
         solver_stall=None,
         vw=vw,
     )
-    return
-
-
-def main():
-
-    ## scaled down geometry
-    # vw = 2.82
-    # geom_scaling = 6.5
-    # n_panels = 40
-
-    # # ## scaled down velocity
-    # # vw = 3.05
-    # # geom_scaling = 1.0
-
-    # ## Computing the reference point, to be equal as used for calc. the wind tunnel data Moments
-    # x_displacement_from_te = -0.157  # -0.172
-    # z_displacement_from_te = -0.252
-    # te_point_full_size_surfplan = np.array([1.472144, 0, 3.696209])
-    # te_point_full_size_CAD = np.array(
-    #     [1.443146003226444, 8.28776104036884e-10, 3.754972573823276]
-    # )
-    # te_point_scaled = te_point_full_size_CAD / geom_scaling
-    # ## height was off even tho chord and span are matching perfectly...
-    # height_correction_factor = 1.0
-    # te_point_scaled[2] = te_point_scaled[2] * height_correction_factor
-    # reference_point = te_point_scaled + np.array(
-    #     [x_displacement_from_te, 0, z_displacement_from_te]
-    # )
-    # # breakpoint()
-
-    # TODO: pre 23-10-2025, using cg
-    # Reference Point
-    te_point_full_size_CAD = np.array(
-        [1.443146003226444, 8.28776104036884e-10, 3.754972573823276]
-    )
-    geom_scaling = 1.0  # TODO: 13/02/2026 changed this to no scaling
-    x_displacement_from_te = (
-        -0.157 * 6.5 / geom_scaling
-    )  # -0.172 # TODO: 13/02/2026 changed this to no scaling
-    z_displacement_from_te = (
-        -0.252 * 6.5 / geom_scaling
-    )  # TODO: 13/02/2026 changed this to no scaling
-    ref_point_from_te_edge = np.array(
-        [x_displacement_from_te, 0, z_displacement_from_te]
-    )
-    reference_point = te_point_full_size_CAD / geom_scaling + ref_point_from_te_edge
-    print(f"reference_point: {reference_point}")
-    # breakpoint()
-
-    ##TODO: post 23-10-2025, using tow-point
-    # geom_scaling = 6.5
-    # reference_point = np.array([0, 0, -7.5]) / geom_scaling  # tow-point
-
-    ## Settings
-    vw = 18.5  # 2.82
-    vw = 2.82
-    n_panels = 150
-    spanwise_panel_distribution = "uniform"
-
-    running_vsm_to_generate_csv_data(
-        project_dir,
-        vw=vw,
-        geom_scaling=geom_scaling,
-        is_with_corrected_polar=True,
-        reference_point=reference_point,
-        n_panels=n_panels,
-        spanwise_panel_distribution=spanwise_panel_distribution,
-    )
 
 
 if __name__ == "__main__":
     main()
-
-    ##TODO: below is a test to verify that the correct projected_area is computed
-    # ### create body_aero
-    # vsm_input_path = Path(project_dir) / "data" / "vsm_input"
-    # geom_scaled_path = Path(vsm_input_path) / "wing_geometry_scaled.yaml"
-    # body_aero = BodyAerodynamics.instantiate(
-    #     n_panels=50,
-    #     file_path=geom_scaled_path,
-    #     spanwise_panel_distribution="uniform",
-    # )
-    # # set va
-    # vw = 18.5
-    # alpha = 7.4
-    # body_aero.va_initialize(
-    #     Umag=vw,
-    #     angle_of_attack=alpha,
-    #     side_slip=0,
-    # )
-    # # set solver
-    # solver = Solver(reference_point=[0, 0, 0])
-    # # solve
-    # results = solver.solve(body_aero)
-    # # print projected_area
-    # print(
-    #     f"projected_area: {results['projected_area']}, true-size: {results['projected_area']*6.5**2}"
-    # )

@@ -164,7 +164,7 @@ def plot_single_row(
 
     # Example special Y-limits if "CFD" in the first label
     if len(labels) > 0 and "CFD" in labels[0]:
-        axs[2].set_ylim(-0.05, 0.15)
+        axs[2].set_ylim(-0.05, 0.2)
     elif "CS" in variables_to_plot:
         axs[2].set_ylim(-0.05, 0.5)
 
@@ -585,7 +585,7 @@ def plotting_polars_beta(
     #     / f"VSM_results_beta_sweep_Rey_5.0_alpha_1195_breukels_stall.csv"
     # )
     data_VSM_beta_re_56e4_alpha_1195_corrected = pd.read_csv(
-        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.1_alpha_1250_corrected.csv"
+        Path(polar_dir) / f"VSM_results_beta_sweep_Rey_5.0_alpha_1250_corrected.csv"
     )
     # data_VSM_beta_re_56e4_alpha_1195_corrected_stall = pd.read_csv(
     #     Path(polar_dir)
@@ -784,7 +784,7 @@ def plotting_polars_beta_moments(
     # )
     data_VSM_beta_re_56e4_alpha_1195_corrected_moment = pd.read_csv(
         Path(polar_dir)
-        / "VSM_results_beta_sweep_Rey_5.1_alpha_1250_corrected_moment.csv"
+        / "VSM_results_beta_sweep_Rey_5.0_alpha_1250_corrected_moment.csv"
     )
     # data_VSM_beta_re_56e4_alpha_1195_corrected_stall_moment = pd.read_csv(
     #     Path(polar_dir)
@@ -932,7 +932,7 @@ def plotting_polars_beta_moments(
         legend_location_index=0,
         legend_location="lower left",
         variables_to_plot=["CMx", "CMy", "CMz"],  # <--- Key difference
-        ylim=[[-0.1, 0.3], [-0.1, 0.2], [-0.25, 0.05]],
+        ylim=[[-0.1, 0.4], [-0.1, 0.2], [-0.25, 0.05]],
         results_dir_2=Path(project_dir) / "figures_final_submission_new",
         file_name_2=f"fig13",
     )
